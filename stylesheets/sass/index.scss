@@ -60,7 +60,7 @@ body {
 
 .header-title {
   display: block;
-  padding: 20px 90px;
+  padding: 20px 90px 10px;
   font-weight: bold;
 }
 
@@ -133,18 +133,19 @@ body {
 }
 
 #header {
-  display: inline-block;
+  display: block;
   position: relative;
   width: 100%;
 }
 
+.bottom-block {
+  padding: 110px 0 10px 60px;
+}
+
 .terminal-wrapper {
-  width: 120px;
   display: inline-block;
-  position: absolute;
-  bottom: 15px;
-  right: 50%;
-  transform: translateX(-50%);
+  padding-left: 20px;
+  vertical-align: middle;
 
   .terminal {
     margin-top: 5px;
@@ -164,7 +165,9 @@ img.plane-icon {
 
 .current-date-block {
   display: inline-block;
-  padding: 10px 67px 15px;
+  padding: 10px 0 15px;
+  vertical-align: middle;
+  width: 30%;
 
   .time-block{
     display: inline-block;

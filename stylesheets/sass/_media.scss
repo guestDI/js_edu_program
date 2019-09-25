@@ -1,9 +1,10 @@
 $mediaMaxWidth: 1200px;
 $mediaMinWidth: 320px;
 
-@media only screen and (min-width: 318px) and (max-width: 579px) {
+@media only screen and (min-width: 318px) and (max-width: 660px) {
   #header {
     display: flex;
+    flex-direction: column;
 
     .header-title {
       padding: 10px 20px 10px 20px;
@@ -11,10 +12,17 @@ $mediaMinWidth: 320px;
 
     .current-date-block {
       padding: 10px 27px 10px;
+      width: auto;
 
       time{
         font-size: 14px;
       }
+    }
+
+    .bottom-block {
+      display: flex;
+      flex-direction: row;
+      padding: 0;
     }
 
     .terminal-wrapper {
@@ -22,10 +30,7 @@ $mediaMinWidth: 320px;
       flex-direction: column;
       width: -webkit-fill-available;
       width: fill-available;
-      position: unset;
       justify-content: flex-end;
-      right: 0;
-      transform: none;
       padding-bottom: 15px;
     }
   }
@@ -48,6 +53,7 @@ $mediaMinWidth: 320px;
     flex-direction: row;
     flex-wrap: wrap;
     height: auto;
+    padding: 5px;
 
     .destination-block {
       display: flex;
@@ -83,21 +89,20 @@ $mediaMinWidth: 320px;
   }
 }
 
-@media only screen and (min-width: 580px) and (max-width: 1199px){
+@media only screen and (min-width: 318px) and (max-width: 420px){
   #header {
     img.plane-icon {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      width: 50px;
+      top: 15px;
+      right: 15px;
+      width: 60px;
     }
 
-    .terminal-wrapper {
-      width: 120px;
-      display: inline-block;
-      position: absolute;
-      bottom: 15px;
-      left: 50%;
-    }
+    // .terminal-wrapper {
+    //   width: 120px;
+    //   display: inline-block;
+    //   position: absolute;
+    //   bottom: 15px;
+    //   left: 50%;
+    // }
   }
 }
