@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <link rel="stylesheet" href="stylesheets/css/index.css">
-    <meta charset="utf-8">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>Departures</title>
     <style>
       @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
@@ -10,22 +10,55 @@
   </head>
   <body>
     <header id="header">
-      <div class="header-title">
-        <h1>Вылеты</h1>
-        <h1>Departures</h1>
-      </div>
-      <div class="terminal">
-        <h5>Терминал</h5>
-        <h5 class="sub-text_color">Terminal</h5>
-      </div>
-    </header>
-    <div id="main">
-      <section class="time-section">
-        <div class="flight-block-wrapper">
-          <div class="flight-block time sub-text_color">
+      <div>
+        <div class="header-title">
+          <h1>Вылеты</h1>
+          <h1 class="sub-text_color">Departures</h1>
+        </div>
+        <div class="current-date-block">
+          <div class="time-block ">
+              <img class="clock-icon" src="images/access_time.png"/>
+          </div>
+          <div class="time-block time">
             <time>16:25</time>
           </div>
-          <div class="flight-block flights-destination">
+          <div class="time-block date sub-text_color">
+            <time>24.09.2019</time>
+          </div>
+        </div>
+      </div>
+      <div class="terminal-wrapper">
+        <span>Терминал</span>
+        <span class="sub-text_color">Terminal</span>
+        <div class="terminal">
+          <div class="square">
+            <div class="content">
+              D
+            </div>
+          </div>
+          <div class="square">
+            <div class="content">
+              E
+            </div>
+          </div>
+          <div class="square">
+            <div class="content">
+              F
+            </div>
+          </div>
+        </div>
+      </div>
+      <img class="plane-icon" src="images/plane_icon.png"/>
+    </header>
+
+    <!-- Main block starts -->
+    <div id="main">
+      <section class="schedule-section">
+        <div class="destination-block-wrapper">
+          <div class="destination-block time sub-text_color">
+            <time>16:25</time>
+          </div>
+          <div class="destination-block flights-destination">
             <div class="left city">
               <span>Ереван</span>
             </div>
@@ -39,10 +72,16 @@
               <span>SU1862</span>
             </div>
           </div>
-          <div class="flight-block gate">
-            <span>E58-90</span>
+          <div class="destination-block gate-block-wrapper">
+            <div class="gate-block">
+              <img class="step" src="images/steps.png"/>
+              <span>3 min</span>
+            </div>
+            <div class="gate-block">
+              <span>E58-90</span>
+            </div>
           </div>
-          <div class="flight-block status">
+          <div class="destination-block status">
             <div>
                 <span>Регистрация закрыта</span>
             </div>
@@ -52,11 +91,11 @@
           </div>
         </div>
 
-        <div class="flight-block-wrapper">
-          <div class="flight-block time sub-text_color">
+        <div class="destination-block-wrapper">
+          <div class="destination-block time sub-text_color">
             <time>16:25</time>
           </div>
-          <div class="flight-block flights-destination">
+          <div class="destination-block flights-destination">
             <div class="left city">
               <span>Саратов</span>
             </div>
@@ -68,10 +107,16 @@
               <span>SU1862</span>
             </div>
           </div>
-          <div class="flight-block gate">
-            <span>E58-90</span>
+          <div class="destination-block gate-block-wrapper">
+            <div class="gate-block">
+              <img class="step" src="images/steps.png" />
+              <span>3 min</span>
+            </div>
+            <div class="gate-block">
+              <span>E58-90</span>
+            </div>
           </div>
-          <div class="flight-block status">
+          <div class="destination-block status">
             <div>
                 <span>Регистрация закрыта</span>
             </div>
@@ -80,6 +125,158 @@
             </div>
           </div>
         </section>
+
+        <section class="schedule-section">
+          <header>
+            <time class="time-next">
+              <h3>
+                17:00
+              </h3>
+            </time>
+          </header>
+          <div class="destination-block-wrapper">
+            <div class="destination-block time sub-text_color">
+              <time>17:10</time>
+            </div>
+            <div class="destination-block flights-destination">
+              <div class="left city">
+                <span>Прага</span>
+              </div>
+              <div>
+                <span class="sub-text_color city">Praga</span>
+              </div>
+              <div class="flights">
+                <span>KL2894</span>
+              </div>
+            </div>
+            <div class="destination-block gate-block-wrapper">
+              <div class="gate-block">
+                <img class="step" src="images/steps.png"/>
+                <span>3 min</span>
+              </div>
+              <div class="gate-block">
+                <span>E158-190</span>
+              </div>
+            </div>
+            <!-- <div class="destination-block gate">
+
+            </div> -->
+            <div class="destination-block status">
+              <div>
+                  <span>Завершение посадки</span>
+              </div>
+              <div class="sub-text_color">
+                  <span>Last Call</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="destination-block-wrapper">
+            <div class="destination-block time sub-text_color">
+              <time>17:20</time>
+            </div>
+            <div class="destination-block flights-destination">
+              <div class="left city">
+                <span>Минск</span>
+              </div>
+              <div>
+                <span class="sub-text_color city">Minsk</span>
+              </div>
+              <div class="flights">
+                <span>KL2894</span>
+                <span>SU1862</span>
+              </div>
+            </div>
+            <div class="destination-block gate-block-wrapper">
+              <div class="gate-block">
+                <img class="step" src="images/steps.png"/>
+                <span>3 min</span>
+              </div>
+              <div class="gate-block">
+                <span>E58-90</span>
+              </div>
+            </div>
+            <div class="destination-block status">
+              <div>
+                  <span>Регистрация</span>
+              </div>
+              <div class="sub-text_color">
+                  <span>Check-In Now</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="destination-block-wrapper">
+            <div class="destination-block time sub-text_color">
+              <time>17:40</time>
+            </div>
+            <div class="destination-block flights-destination">
+              <div class="left city">
+                <span>Сочи</span>
+              </div>
+              <div>
+                <span class="sub-text_color city">Sochi</span>
+              </div>
+              <div class="flights">
+                <span>KL2894</span>
+                <span>SU1862</span>
+              </div>
+            </div>
+            <div class="destination-block gate-block-wrapper">
+              <div class="gate-block">
+                <img class="step" src="images/steps.png"/>
+                <span>3 min</span>
+              </div>
+              <div class="gate-block">
+                <span>E63-80</span>
+              </div>
+            </div>
+            <div class="destination-block status">
+              <div>
+                  <span>Регистрация</span>
+              </div>
+              <div class="sub-text_color">
+                  <span>Check-In Now</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="destination-block-wrapper">
+            <div class="destination-block time sub-text_color">
+              <time>17:55</time>
+            </div>
+            <div class="destination-block flights-destination">
+              <div class="left city">
+                <span>Будапешт</span>
+              </div>
+              <div>
+                <span class="sub-text_color city">Budapest</span>
+              </div>
+              <div class="flights">
+                <span>AF4962</span>
+                <span>KL2871</span>
+                <span>SU1260</span>
+              </div>
+            </div>
+            <div class="destination-block gate-block-wrapper">
+              <div class="gate-block">
+                <img class="step" src="images/steps.png"/>
+                <span>7 min</span>
+              </div>
+              <div class="gate-block">
+                <span>D2-10</span>
+              </div>
+            </div>
+            <div class="destination-block status">
+              <div>
+                  <span>Регистрация</span>
+              </div>
+              <div class="sub-text_color">
+                  <span>Check-In Now</span>
+              </div>
+            </div>
+          </div>
+          </section>
       </div>
 
 
@@ -91,7 +288,7 @@
       </section> -->
     </div>
     <footer id="footer">
-      footer
+      svo
     </footer>
   </body>
 </html>

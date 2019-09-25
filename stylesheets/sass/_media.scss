@@ -1,0 +1,103 @@
+$mediaMaxWidth: 1200px;
+$mediaMinWidth: 320px;
+
+@media only screen and (min-width: 318px) and (max-width: 579px) {
+  #header {
+    display: flex;
+
+    .header-title {
+      padding: 10px 20px 10px 20px;
+    }
+
+    .current-date-block {
+      padding: 10px 27px 10px;
+
+      time{
+        font-size: 14px;
+      }
+    }
+
+    .terminal-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: -webkit-fill-available;
+      width: fill-available;
+      position: unset;
+      justify-content: flex-end;
+      right: 0;
+      transform: none;
+      padding-bottom: 15px;
+    }
+  }
+
+  .square {
+    width: 25px;
+  }
+
+  .content {
+      font-size: 0.9em;
+  }
+
+  .flights {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .destination-block-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: auto;
+
+    .destination-block {
+      display: flex;
+    }
+
+    .gate-block-wrapper {
+      flex-direction: row;
+      width: 45%;
+      height: auto;
+
+      .gate-block {
+        display: flex;
+        align-items: center;
+        margin: 3px;
+      }
+    }
+
+    .flights-destination {
+      flex-direction: column;
+      width: 38%;
+    }
+
+    .flights {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+}
+
+@media only screen and (min-width: 580px) and (max-width: 1199px){
+  #header {
+    img.plane-icon {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      width: 50px;
+    }
+
+    .terminal-wrapper {
+      width: 120px;
+      display: inline-block;
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+    }
+  }
+}

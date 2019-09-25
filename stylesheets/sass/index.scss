@@ -1,8 +1,11 @@
-$font-stack:    Helvetica, sans-serif;
+@import '_square';
+@import '_media';
+
 $primary-bg-color: #000;
 $secondary-bg-color: #19212b;
 $primary-font-color: #fff;
 $secondary-font-color: #b8b8b8;
+$flight-font-color: #d17d06;
 
 * {
   margin: 0;
@@ -14,95 +17,179 @@ html {
     background-color: #484a49;
 }
 
+.sub-text_color {
+  color: $secondary-font-color;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
 body {
   background-color: $primary-bg-color;
   color: $primary-font-color;
-  width: 1200px;
+  max-width: 1200px;
   margin: auto;
   letter-spacing: 0.05em;
   font-family: 'Montserrat', sans-serif;
 
-  .sub-text_color {
-    color: $secondary-font-color;
-  }
-
-  .right {
-    float: right;
-  }
-
-  .left {
-    float: left;
-  }
-
-  #header {
-    display: relative;
-    padding: 20px 100px;
-    width: 100%;
-  }
-
-  section.time-section {
+  section.schedule-section {
     display: block;
     border-radius: 3px;
     margin: 0 5px 5px;
-    padding: 5px 0;
     background-color: $secondary-bg-color;
 
-    .flight-block-wrapper {
-      display: block;
-      border-bottom: 1px solid #0e131a;
-      padding: 5px 10px;
-      height: 40px;
+    header {
+      padding-left: 63px;
+      padding-top: 3px;
 
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .flights {
-        font-size: 10px;
+      .time-next {
         color: #d17d06;
       }
-
-      .secondary-city {
-        text-align: right;
-      }
     }
-
-    .flight-block {
-      display: inline-block;
-      vertical-align: top;
-      height: 100%;
-
-      &.time {
-        padding: 0 5px 0 2px;
-        width: auto;
-      }
-
-      &.flights-destination {
-        display: inline-block;
-        width: 40%;
-
-        .city {
-          width: 30%;
-        }
-      }
-
-      &.gate {
-        width: 20%;
-        background-color: #0e131a;
-        height: 100%
-      }
-
-      &.status {
-        width: 25%;
-        margin: 0;
-      }
-    }
-  }
-
-  #footer {
-    display: block;
-    background-color: $secondary-bg-color;
-    border-radius: 3px;
-    margin: 0 5px;
   }
 }
+
+.header-title {
+  display: block;
+  padding: 20px 90px;
+  font-weight: bold;
+}
+
+.destination-block-wrapper {
+  border-bottom: 1px solid #0e131a;
+  padding: 5px 10px;
+  height: 50px;
+  font-weight: 600;
+
+  .destination-block {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .time {
+    padding: 0 5px 0 2px;
+    width: 50px;
+  }
+
+  .status {
+    width: 25%;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .flights-destination {
+    width: 30%;
+
+    .city {
+      width: 40%;
+    }
+
+    .flights {
+      font-size: 10px;
+      padding: 4px 0;
+      color: $flight-font-color;
+
+      span {
+        padding: 3px 2px;
+      }
+    }
+  }
+
+  .gate-block-wrapper {
+    width: 25%;
+    height: 100%;
+
+    .gate-block {
+      display: inline-block;
+      width: 45%;
+      background-color: #0e131a;
+      height: 100%;
+
+      span {
+        font-size: 14px;
+        padding: 2px 0 0 3px;
+      }
+    }
+
+    .step {
+      vertical-align: top;
+      width: 18px;
+      padding: 3px;
+    }
+  }
+}
+
+#header {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+
+.terminal-wrapper {
+  width: 120px;
+  display: inline-block;
+  position: absolute;
+  bottom: 15px;
+  right: 50%;
+  transform: translateX(-50%);
+
+  .terminal {
+    margin-top: 5px;
+  }
+
+  span {
+    font-weight: bold;
+  }
+}
+
+img.plane-icon {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  width: 75px;
+}
+
+.current-date-block {
+  display: inline-block;
+  padding: 10px 67px 15px;
+
+  .time-block{
+    display: inline-block;
+
+    img.clock-icon {
+      width: 24px;
+    }
+  }
+
+  .time, .date {
+    vertical-align: top;
+    font-size: 19px;
+    font-weight: bold;
+  }
+
+  .date {
+    padding-left: 13px;
+  }
+}
+
+#footer {
+  display: block;
+  background-color: $secondary-bg-color;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+
+@import '_media';
