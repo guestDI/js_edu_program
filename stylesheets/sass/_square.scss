@@ -1,3 +1,5 @@
+@import '_media';
+
 $square-color: #db8b18;
 
 .square {
@@ -6,6 +8,10 @@ $square-color: #db8b18;
   width: 35px;
   background: $square-color;
   border-radius: 2px;
+
+  @include for-phone-screens {
+    width: 25px;
+  }
 }
 
 .square:after {
@@ -23,4 +29,8 @@ $square-color: #db8b18;
   color: #000;
   font-size: 1.1em;
   font-weight: bold;
+
+  @include for-phone-screens {
+    font-size: 0.9em;
+  }
 }
