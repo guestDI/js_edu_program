@@ -183,50 +183,53 @@ body section.schedule-section header .time-next {
   padding: 3px;
 }
 
-#header {
+header {
   display: block;
   position: relative;
   width: 100%;
 }
 @media only screen and (min-width: 318px) and (max-width: 660px) {
-  #header {
+  header {
     display: flex;
     flex-direction: column;
   }
 }
-#header .header-title {
+header .header-title {
   display: block;
   padding: 20px 90px 10px;
   font-weight: bold;
 }
 @media only screen and (min-width: 318px) and (max-width: 660px) {
-  #header .header-title {
+  header .header-title {
     padding: 10px 20px 10px 20px;
   }
 }
-#header .bottom-block {
+header .header-title h1 span {
+  display: block;
+}
+header .bottom-block {
   padding: 110px 0 10px 60px;
 }
 @media only screen and (min-width: 318px) and (max-width: 660px) {
-  #header .bottom-block {
+  header .bottom-block {
     display: flex;
     flex-direction: row;
     padding: 0;
   }
 }
-#header .bottom-block .terminal-wrapper {
+header .bottom-block .terminal-wrapper {
   display: inline-block;
   padding-left: 20px;
   vertical-align: middle;
 }
-#header .bottom-block .terminal-wrapper .terminal {
+header .bottom-block .terminal-wrapper .terminal {
   margin-top: 5px;
 }
-#header .bottom-block .terminal-wrapper span {
+header .bottom-block .terminal-wrapper span {
   font-weight: bold;
 }
 @media only screen and (min-width: 318px) and (max-width: 660px) {
-  #header .bottom-block .terminal-wrapper {
+  header .bottom-block .terminal-wrapper {
     display: flex;
     flex-direction: column;
     width: -webkit-fill-available;
@@ -235,47 +238,47 @@ body section.schedule-section header .time-next {
     padding-bottom: 15px;
   }
 }
-#header .bottom-block .current-date-block {
+header .bottom-block .current-date-block {
   display: inline-block;
   padding: 10px 0 15px;
   vertical-align: middle;
   width: 30%;
 }
 @media only screen and (min-width: 318px) and (max-width: 660px) {
-  #header .bottom-block .current-date-block {
+  header .bottom-block .current-date-block {
     padding: 10px 27px 10px;
     width: auto;
   }
 }
-#header .bottom-block .current-date-block .time-block {
+header .bottom-block .current-date-block .time-block {
   display: inline-block;
 }
-#header .bottom-block .current-date-block .time-block img.clock-icon {
+header .bottom-block .current-date-block .time-block img.clock-icon {
   width: 24px;
 }
-#header .bottom-block .current-date-block .time, #header .bottom-block .current-date-block .date {
+header .bottom-block .current-date-block .time, header .bottom-block .current-date-block .date {
   vertical-align: top;
   font-size: 19px;
   font-weight: bold;
 }
-#header .bottom-block .current-date-block .time {
+header .bottom-block .current-date-block .time {
   padding-right: 13px;
 }
-#header img.plane-icon {
+header img.plane-icon {
   position: absolute;
   top: 20px;
   right: 35px;
   width: 75px;
 }
 @media only screen and (min-width: 318px) and (max-width: 420px) {
-  #header img.plane-icon {
+  header img.plane-icon {
     top: 15px;
     right: 15px;
     width: 60px;
   }
 }
 
-#footer {
+footer {
   display: block;
   background-color: #19212b;
   border-radius: 3px;

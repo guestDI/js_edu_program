@@ -165,7 +165,7 @@ body {
   }
 }
 
-#header {
+header {
   display: block;
   position: relative;
   width: 100%;
@@ -182,6 +182,10 @@ body {
 
     @include for-phone-screens {
       padding: 10px 20px 10px 20px;
+    }
+
+    h1 span {
+      display: block;
     }
   }
 
@@ -262,7 +266,7 @@ body {
   }
 }
 
-#footer {
+footer {
   display: block;
   background-color: $secondary-bg-color;
   border-radius: 3px;
