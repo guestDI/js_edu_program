@@ -9,7 +9,6 @@ $flight-font-color: #d17d06;
 
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
@@ -58,16 +57,6 @@ body {
   }
 }
 
-.header-title {
-  display: block;
-  padding: 20px 90px 10px;
-  font-weight: bold;
-
-  @include for-phone-screens {
-    padding: 10px 20px 10px 20px;
-  }
-}
-
 .destination-block-wrapper {
   border-bottom: 1px solid #0e131a;
   padding: 5px 10px;
@@ -82,6 +71,10 @@ body {
     padding: 5px;
   }
 
+  &:last-child {
+    border-bottom: none;
+  }
+
   .destination-block {
     display: inline-block;
     vertical-align: top;
@@ -89,10 +82,6 @@ body {
     @include for-phone-screens {
       display: flex;
     }
-  }
-
-  &:last-child {
-    border-bottom: none;
   }
 
   .time {
@@ -185,81 +174,91 @@ body {
     display: flex;
     flex-direction: column;
   }
-}
 
-.bottom-block {
-  padding: 110px 0 10px 60px;
-
-  @include for-phone-screens {
-    display: flex;
-    flex-direction: row;
-    padding: 0;
-  }
-}
-
-.terminal-wrapper {
-  display: inline-block;
-  padding-left: 20px;
-  vertical-align: middle;
-
-  .terminal {
-    margin-top: 5px;
-  }
-
-  span {
+  .header-title {
+    display: block;
+    padding: 20px 90px 10px;
     font-weight: bold;
-  }
 
-  @include for-phone-screens {
-    display: flex;
-    flex-direction: column;
-    width: -webkit-fill-available;
-    width: fill-available;
-    justify-content: flex-end;
-    padding-bottom: 15px;
-  }
-}
-
-img.plane-icon {
-  position: absolute;
-  top: 20px;
-  right: 35px;
-  width: 75px;
-
-  @include for-small-phone-screens {
-    top: 15px;
-    right: 15px;
-    width: 60px;
-  }
-}
-
-.current-date-block {
-  display: inline-block;
-  padding: 10px 0 15px;
-  vertical-align: middle;
-  width: 30%;
-
-  @include for-phone-screens {
-    padding: 10px 27px 10px;
-    width: auto;
-  }
-
-  .time-block{
-    display: inline-block;
-
-    img.clock-icon {
-      width: 24px;
+    @include for-phone-screens {
+      padding: 10px 20px 10px 20px;
     }
   }
 
-  .time, .date {
-    vertical-align: top;
-    font-size: 19px;
-    font-weight: bold;
+  .bottom-block {
+    padding: 110px 0 10px 60px;
+
+    @include for-phone-screens {
+      display: flex;
+      flex-direction: row;
+      padding: 0;
+    }
+
+    .terminal-wrapper {
+      display: inline-block;
+      padding-left: 20px;
+      vertical-align: middle;
+
+      .terminal {
+        margin-top: 5px;
+      }
+
+      span {
+        font-weight: bold;
+      }
+
+      @include for-phone-screens {
+        display: flex;
+        flex-direction: column;
+        width: -webkit-fill-available;
+        width: fill-available;
+        justify-content: flex-end;
+        padding-bottom: 15px;
+      }
+    }
+
+    .current-date-block {
+      display: inline-block;
+      padding: 10px 0 15px;
+      vertical-align: middle;
+      width: 30%;
+
+      @include for-phone-screens {
+        padding: 10px 27px 10px;
+        width: auto;
+      }
+
+      .time-block{
+        display: inline-block;
+
+        img.clock-icon {
+          width: 24px;
+        }
+      }
+
+      .time, .date {
+        vertical-align: top;
+        font-size: 19px;
+        font-weight: bold;
+      }
+
+      .time {
+        padding-right: 13px;
+      }
+    }
   }
 
-  .time {
-    padding-right: 13px;
+  img.plane-icon {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    width: 75px;
+
+    @include for-small-phone-screens {
+      top: 15px;
+      right: 15px;
+      width: 60px;
+    }
   }
 }
 
@@ -269,5 +268,3 @@ img.plane-icon {
   border-radius: 3px;
   margin: 0 5px;
 }
-
-@import '_media';
