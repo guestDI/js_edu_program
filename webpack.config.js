@@ -9,7 +9,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
-    port: 3004,
+    port: 3005,
     inline: true,
     host: "localhost",
     contentBase: './',
@@ -23,7 +23,7 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        use: ['css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.html$/,
