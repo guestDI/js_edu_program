@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: 'development',
-  entry: './index.js',
+  entry: ['babel-polyfill', './index.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -23,18 +23,25 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
+        exclude: /node-module/,
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.html$/,
-        loader: "raw-loader"
+        use: ["raw-loader"]
+      },
+      {
+        test: /\.js$/,
+        exclude: /node-module/,
+        use: ["babel-loader"]
       }
     ]
   },
   plugins: [
     // new ExtractTextPlugin('style.css'),
     new HtmlWebpackPlugin({
-            template: "./index.html"
+            template: "./index.html",
+            inject: false
         })
   ]
 };

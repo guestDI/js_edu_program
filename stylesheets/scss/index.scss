@@ -40,11 +40,13 @@ body {
   letter-spacing: 0.05em;
   font-family: 'Montserrat', sans-serif;
 
-  section.schedule-section {
+  ul.schedule-section {
     display: block;
     border-radius: 3px;
     margin: 0 5px 5px;
     background-color: $secondary-bg-color;
+    list-style-type: none;
+    padding-left: 0%;
 
     header {
       padding-left: 63px;
