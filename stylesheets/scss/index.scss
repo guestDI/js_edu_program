@@ -16,8 +16,16 @@ html {
     background-color: #484a49;
 }
 
+.sub-city {
+  width: 40%;
+}
+
 .sub-text_color {
   color: $secondary-font-color;
+}
+
+.sub-text_size {
+  font-size: 0.85em;
 }
 
 .right {
@@ -267,6 +275,46 @@ header {
     }
   }
 }
+
+// flip effect start
+.flip {
+  perspective: 1500px;
+  
+  span {
+    display: inline-block;
+    padding: 0;    
+    transition: transform 0.3s;
+    transform-origin: 50% 0;
+    transform-style: preserve-3d;
+    animation: flip 4s linear infinite 0s;
+
+    @include for-phone-screens {
+      width: 100%;
+    }
+  }
+  
+  span:before {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: attr(data-content);
+    transform: rotateX(-90deg);
+    transform-origin: 50% 0;
+  }
+ 
+  @keyframes flip{
+      0% {transform: rotateX(0deg)}
+      10% {transform: rotateX(0deg)}
+      25% {transform: rotateX(0deg)}
+      50% {transform: rotateX(90deg)}
+      75% {transform: rotateX(90deg)}
+      100% {transform: rotateX(0deg)}
+  }
+}
+
+// flip effect end
 
 footer {
   display: block;

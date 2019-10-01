@@ -18,8 +18,8 @@ const renderItem = item => {
                 <div class="left city">
                 <span>${item.destination_ru}</span>
                 </div>
-                <div>
-                <span class="sub-text_color city">${item.destination_en}</span>
+                <div class="flip">
+                <span class="sub-text_color sub-city sub-text_size" data-content=${item.destination_ch}>${item.destination_en}</span>
                 </div>
                 <div class="flights">
                     ${renderFilghts(item.flights).join('')}
@@ -38,8 +38,8 @@ const renderItem = item => {
                 <div>
                     <span>${item.status_ru}</span>
                 </div>
-                <div class="sub-text_color">
-                    <span>${item.status_en}</span>
+                <div class="sub-text_color flip">
+                    <span data-content=${item.status_ch}>${item.status_en}</span>
                 </div>
             </div>
         </li>
