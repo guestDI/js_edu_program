@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const renderFilghts = flights => {
     let html = [];
 
@@ -12,14 +14,14 @@ const renderItem = item => {
     return `
         <li class="destination-block-wrapper data-item-id=${item.id}">
             <div class="destination-block time sub-text_color">
-                <time>${item.time}</time>
+                <time>${moment(item.time).format("HH:mm")}</time>
             </div>
             <div class="destination-block flights-destination">
                 <div class="left city">
                 <span>${item.destination_ru}</span>
                 </div>
                 <div class="flip">
-                <span class="sub-text_color sub-city sub-text_size" data-content=${item.destination_ch}>${item.destination_en}</span>
+                    <span class="sub-text_color sub-city sub-text_size flip-text" data-content=${item.destination_ch}>${item.destination_en}</span>
                 </div>
                 <div class="flights">
                     ${renderFilghts(item.flights).join('')}
@@ -27,11 +29,11 @@ const renderItem = item => {
             </div>
             <div class="destination-block gate-block-wrapper">
                 <div class="gate-block">
-                <img class="step" src="images/steps.png"/>
-                <span>${item.gate_time}</span>
+                    <img class="step" src="images/steps.png"/>
+                    <span>${item.gate_time}</span>
                 </div>
-                <div class="gate-block">
-                <span>${item.gate}</span>
+                    <div class="gate-block">
+                    <span>${item.gate}</span>
                 </div>
             </div>
             <div class="destination-block status">
@@ -39,14 +41,21 @@ const renderItem = item => {
                     <span>${item.status_ru}</span>
                 </div>
                 <div class="sub-text_color flip">
-                    <span data-content=${item.status_ch}>${item.status_en}</span>
+                    <span class="flip-text" data-content=${item.status_ch}>${item.status_en}</span>
                 </div>
             </div>
         </li>
     `
 }
 
+export const removeChildFromDOM = () => {
+    while (document.querySelector('.schedule-section').hasChildNodes()) {
+        document.querySelector('.schedule-section').removeChild(document.querySelector('.schedule-section').lastChild);
+      }
+}
+
 export const renderItems = data => {
+    // console.log(data)
     let html = [];
 
     data.map(item => {
@@ -54,4 +63,21 @@ export const renderItems = data => {
     })
 
     return html;
+}
+
+export const setStatusStyle = () => {
+    const destinationRows = document.querySelectorAll('.destination-block-wrapper');
+    const statusBlocks = document.querySelectorAll('.status');
+
+    statusBlocks.forEach((item, i) => {
+        let status = item.getElementsByTagName("span")[0].innerHTML;
+
+        if(status === "Cancelled" || status === "Отменен"){
+            item.classList.add("status_cancelled");
+            item.getElementsByTagName("span")[1].style.color = "#ff3333"
+            destinationRows[i].getElementsByTagName("time")[0].style.visibility = 'hidden'
+        }
+    })
+
+    
 }

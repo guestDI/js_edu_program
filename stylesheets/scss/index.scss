@@ -103,10 +103,16 @@ body {
     width: 25%;
     margin: 0;
     font-size: 12px;
+    height: -webkit-fill-available;
+    padding: 1px 2px;
 
     @include for-phone-screens {
       flex-direction: column;
       width: 100%;
+    }
+
+    &_cancelled {
+      background-color: #730000;
     }
   }
 
@@ -278,39 +284,38 @@ header {
 
 // flip effect start
 .flip {
-  perspective: 1500px;
+  // perspective: 1000px;
   
-  span {
+  span.flip-text {
     display: inline-block;
     padding: 0;    
     transition: transform 0.3s;
     transform-origin: 50% 0;
     transform-style: preserve-3d;
-    animation: flip 4s linear infinite 0s;
+    animation: flip ease-in-out infinite;
+    animation-fill-mode: both;
+    -webkit-animation-duration: 8s;
 
     @include for-phone-screens {
       width: 100%;
     }
   }
   
-  span:before {
+  span.flip-text:before {
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     height: 100%;
     content: attr(data-content);
-    transform: rotateX(-90deg);
+    transform: rotateX(-89deg);
     transform-origin: 50% 0;
   }
  
   @keyframes flip{
-      0% {transform: rotateX(0deg)}
-      10% {transform: rotateX(0deg)}
-      25% {transform: rotateX(0deg)}
-      50% {transform: rotateX(90deg)}
-      75% {transform: rotateX(90deg)}
-      100% {transform: rotateX(0deg)}
+      0%, 10% {transform: rotateX(0deg)}
+      20%, 50%, 60% {transform: rotateX(90deg)}
+      70%, 100% {transform: rotateX(0deg)}
   }
 }
 

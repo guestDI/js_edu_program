@@ -1,5 +1,27 @@
 {
-  "status_ru": "Посадка окончена",
-  "status_en": "Gate Closed",
-  "status_ch": "降落結束",
+    "last_call": {
+        "status_ru": "Завершение посадки",
+        "status_en": "Last Call",
+        "status_ch": "登陸完成"
+    },
+    "closed": {
+        "status_ru": "Посадка завершена",
+        "status_en": "Gate Closed",
+        "status_ch": "閘門關閉"
+    },
+    "boarding_now": {
+        "status_ru": "Идет посадка",
+        "status_en": "Boarding Now",
+        "status_ch": "是登陸"
+    },
+    "waiting": {
+        "status_ru": "Ожидание посадки",
+        "status_en": "Wait for boarding",
+        "status_ch": "等待登機"
+    },
+    "cancelled": {
+        "status_ru": "Отменен",
+        "status_en": "Canceled",
+        "status_ch": "取消"
+    }
 }
