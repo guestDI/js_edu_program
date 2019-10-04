@@ -177,6 +177,10 @@ body {
       vertical-align: top;
       width: 18px;
       padding: 3px;
+
+      &_closed {
+        filter: invert(.7) sepia(1) saturate(7) hue-rotate(5deg);
+      }
     }
   }
 }

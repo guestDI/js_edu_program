@@ -1,5 +1,11 @@
 import moment from 'moment';
 
+const DOMStrings = {
+    destinationRowsSelector: '.destination-block-wrapper',
+    gateSelector: '.gate-block-wrapper'
+};
+
+
 const renderFilghts = flights => {
     let html = [];
 
@@ -29,7 +35,7 @@ const renderItem = item => {
             </div>
             <div class="destination-block gate-block-wrapper">
                 <div class="gate-block">
-                    <img class="step" src="images/steps.png"/>
+                    <img class="step" src="images/steps.png" />
                     <span>${item.gate_time}</span>
                 </div>
                     <div class="gate-block">
@@ -48,14 +54,7 @@ const renderItem = item => {
     `
 }
 
-export const removeChildFromDOM = () => {
-    while (document.querySelector('.schedule-section').hasChildNodes()) {
-        document.querySelector('.schedule-section').removeChild(document.querySelector('.schedule-section').lastChild);
-      }
-}
-
 export const renderItems = data => {
-    // console.log(data)
     let html = [];
 
     data.map(item => {
@@ -65,8 +64,26 @@ export const renderItems = data => {
     return html;
 }
 
-export const setStatusStyle = () => {
+export const removeChildFromDOM = () => {
+    while (document.querySelector('.schedule-section').hasChildNodes()) {
+        document.querySelector('.schedule-section').removeChild(document.querySelector('.schedule-section').lastChild);
+      }
+}
+
+export const renderStatus = (index, status) => {
     const destinationRows = document.querySelectorAll('.destination-block-wrapper');
+    
+    destinationRows.forEach((item, i) => {
+        if(i == index){
+            item.querySelector('.status').getElementsByTagName('span')[0].innerHTML = status.status_ru;
+            item.querySelector('.status').getElementsByTagName('span')[1].innerHTML = status.status_en;
+            item.querySelector('.status').getElementsByTagName('span')[1].setAttribute('data-content', status.status_ch);
+        }
+    })
+}
+
+export const setStatusStyle = () => {
+    const destinationRows = document.querySelectorAll(DOMStrings.destinationRowsSelector);
     const statusBlocks = document.querySelectorAll('.status');
 
     statusBlocks.forEach((item, i) => {
@@ -77,7 +94,16 @@ export const setStatusStyle = () => {
             item.getElementsByTagName("span")[1].style.color = "#ff3333"
             destinationRows[i].getElementsByTagName("time")[0].style.visibility = 'hidden'
         }
-    })
+    })   
+}
 
+export const setGateStyle = (data) => {
+    const gate = document.querySelectorAll(DOMStrings.gateSelector);
     
+    data.forEach((item, i) => {
+        if(item.status_en == "Gate Closed"){
+            gate[i].querySelector("img").classList.add("step_closed");
+            gate[i].style.color = "#d17d06"
+        }
+    })   
 }

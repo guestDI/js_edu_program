@@ -4,31 +4,18 @@ import { getDestinations, getStatusByName } from './controller.js';
 import moment from 'moment';
 
 let timeOut = null;
-let dateChangeTimeOut = null;
 
 const state = {
     currentDate: Date.getDate,
-    destinations: []
+    destinations: [],
+    closedDestinations: []
 }
 
-const setDestinationsTime = () => {
-    let initial = getDestinations().slice();
-    let updated = [];
-
-    initial.map((item, i) => {
-        let t = moment(state.currentDate).add((7 + i)*3, 'm').toDate();
-        item.time = t;
-        updated.push(item);
-    })
-
-    return updated;
+const setupEventListeners = function(){      
+    document.addEventListener('keydown', stopGlobalTimer);     
 }
 
-const updateDestinationStatus = () => {
-
-}
-
-const getCurrentDate = () => {
+const formatCurrentDate = () => {
     return moment(state.currentDate).format("DD.MM.YYYY")    
 }
 
@@ -36,13 +23,42 @@ const formatCurrentTime = () => {
     return moment(state.currentDate).format("HH:mm")    
 }
 
-const addMinutes = () => {
-    let current = state.currentDate;
+const setDestinationsTime = () => {
+    let initial = getDestinations().slice();
+    let updatedDestinations = [];
+
+    updatedDestinations = initial.map((item, i) => {
+        let t = moment(state.currentDate).add((7 + i)*3, 'm').toDate();
+        item.time = t;
+        
+        return item;
+    })
+
+    state.destinations = updatedDestinations.slice();
+}
+
+const updateCurrentDateTime = () => {
+    const current = state.currentDate;
 
     state.currentDate = moment(current).add(1, 'm').toDate();
     headerActions.renderCurrentTime(formatCurrentTime());
-    headerActions.renderCurrentDate(getCurrentDate());
-    dateChangeTimeOut = setTimeout(addMinutes, 3000);
+    headerActions.renderCurrentDate(formatCurrentDate());
+}
+
+export const updateListOfClosedDestinations = item => {
+
+    if(state.closedDestinations.length < 5){
+        if(!state.closedDestinations.some(d => d.id === item.id)){
+            state.closedDestinations.splice(0, 0, item)
+        }        
+    } else {
+        state.closedDestinations.splice(state.closedDestinations.length - 1, 1);
+        if(!state.closedDestinations.some(d => d.id === item.id)){
+            state.closedDestinations.splice(0, 0, item)
+        } 
+    }
+    
+    console.log(state.closedDestinations)
 }
 
 const checkTime = () => {
@@ -53,64 +69,71 @@ const checkTime = () => {
         let destinationTime = moment(item.time);
         let duration = moment.duration(destinationTime.diff(state.currentDate));
         minutes = duration.asMinutes();
-        if(minutes < 15){
+        if(minutes < 15 && !(item.status_en == "Canceled")){
             let status = getStatusByName("closed");
             item.status_ru = status.status_ru
             item.status_en = status.status_en
             item.status_ch = status.status_ch
-        } else if(minutes < 25){
+
+            updateListOfClosedDestinations(item);
+
+
+            actions.renderStatus(i, status)
+        } else if(minutes < 25 && !(item.status_en == "Canceled")){
             let status = getStatusByName("last_call");
             item.status_ru = status.status_ru
             item.status_en = status.status_en
             item.status_ch = status.status_ch
-        } else if(minutes < 35){
+
+            actions.renderStatus(i, status)
+        } else if(minutes < 35 && !(item.status_en == "Canceled")){
             let status = getStatusByName("boarding_now");
             item.status_ru = status.status_ru
             item.status_en = status.status_en
             item.status_ch = status.status_ch
-        } else if(minutes < 40){
+
+            actions.renderStatus(i, status)
+        } else if(minutes < 40 && !(item.status_en == "Canceled")){
             let status = getStatusByName("waiting");
             item.status_ru = status.status_ru
             item.status_en = status.status_en
             item.status_ch = status.status_ch
+
+            actions.renderStatus(i, status)
         }        
 
         return item;
         
     })
 
-    // console.log(initial)
-    actions.removeChildFromDOM();
-    const parentRoot = document.querySelectorAll('.schedule-section');
-    parentRoot[0].insertAdjacentHTML('afterbegin', actions.renderItems(initial).join(''))
+    actions.setGateStyle(initial);
 }
 
-function setTimer() {
+function setGlobalTimer() {
+    updateCurrentDateTime();
     checkTime();
+    actions.setStatusStyle();
 
-    timeOut = setTimeout(setTimer, 3000);
+    timeOut = setTimeout(setGlobalTimer, 3000);
 }
 
-function stopTimer(e) {
+function stopGlobalTimer(e) {
     if((e.key=='ctrl' || e.keyCode==17)){
         clearTimeout(timeOut);
-        clearTimeout(dateChangeTimeOut);
-        console.log('Timers have been stopped')
+        console.log('Timer has been stopped')
     }
 }
 
-const setupEventListeners = function(){      
-    document.addEventListener('keydown', stopTimer);     
-}
-
+//Initial state of application
 window.onload = function() {
-    const parentRoot = document.querySelectorAll('.schedule-section');
-    state.destinations = setDestinationsTime().slice();
-    parentRoot[0].insertAdjacentHTML('afterbegin', actions.renderItems(state.destinations).join(''))
     setupEventListeners();
-    actions.setStatusStyle();
-    headerActions.renderCurrentDate(getCurrentDate());
+    headerActions.renderCurrentDate(formatCurrentDate());
     headerActions.renderCurrentTime(formatCurrentTime());
-    addMinutes();
-    setTimer();
+
+    setDestinationsTime();
+    const parentRoot = document.querySelectorAll('.schedule-section');
+    parentRoot[0].insertAdjacentHTML('afterbegin', actions.renderItems(state.destinations).join(''))
+    
+    actions.setStatusStyle();    
+    // setGlobalTimer();
 }
