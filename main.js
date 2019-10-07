@@ -57,61 +57,78 @@ export const updateListOfClosedDestinations = item => {
             state.closedDestinations.splice(0, 0, item)
         } 
     }
-    
-    console.log(state.closedDestinations)
+}
+
+export const updateInitialDestinations = item => {
+    const initial = state.destinations.slice();
+    let updated = [];
+
+    if(initial.some(d => d.id === item.id)){
+        updated = initial.filter(el => el.id !== item.id);
+    } 
+
+    state.destinations = updated;
 }
 
 const checkTime = () => {
     let minutes = null;
     let initial = [];
 
-    initial = state.destinations.map((item, i) => {
-        let destinationTime = moment(item.time);
-        let duration = moment.duration(destinationTime.diff(state.currentDate));
-        minutes = duration.asMinutes();
-        if(minutes < 15 && !(item.status_en == "Canceled")){
-            let status = getStatusByName("closed");
-            item.status_ru = status.status_ru
-            item.status_en = status.status_en
-            item.status_ch = status.status_ch
+    if(state.destinations.length > 0){
+        initial = state.destinations.map((item, i) => {
+            let destinationTime = moment(item.time);
+            let duration = moment.duration(destinationTime.diff(state.currentDate));
+            minutes = duration.asMinutes();
+            if(minutes < 15 && !(item.status_en == "Canceled")){
+                let status = getStatusByName("closed");
+                item.status_ru = status.status_ru
+                item.status_en = status.status_en
+                item.status_ch = status.status_ch
+    
+                updateListOfClosedDestinations(item);
+                updateInitialDestinations(item);
+    
+                actions.renderStatus(i, status)
+            } else if(minutes < 25 && !(item.status_en == "Canceled")){
+                let status = getStatusByName("last_call");
+                item.status_ru = status.status_ru
+                item.status_en = status.status_en
+                item.status_ch = status.status_ch
+    
+                actions.renderStatus(i, status)
+            } else if(minutes < 35 && !(item.status_en == "Canceled")){
+                let status = getStatusByName("boarding_now");
+                item.status_ru = status.status_ru
+                item.status_en = status.status_en
+                item.status_ch = status.status_ch
+    
+                actions.renderStatus(i, status)
+            } else if(minutes < 40 && !(item.status_en == "Canceled")){
+                let status = getStatusByName("waiting");
+                item.status_ru = status.status_ru
+                item.status_en = status.status_en
+                item.status_ch = status.status_ch
+    
+                actions.renderStatus(i, status)
+            }        
+    
+            return item;
+            
+        })
+    }
 
-            updateListOfClosedDestinations(item);
-
-
-            actions.renderStatus(i, status)
-        } else if(minutes < 25 && !(item.status_en == "Canceled")){
-            let status = getStatusByName("last_call");
-            item.status_ru = status.status_ru
-            item.status_en = status.status_en
-            item.status_ch = status.status_ch
-
-            actions.renderStatus(i, status)
-        } else if(minutes < 35 && !(item.status_en == "Canceled")){
-            let status = getStatusByName("boarding_now");
-            item.status_ru = status.status_ru
-            item.status_en = status.status_en
-            item.status_ch = status.status_ch
-
-            actions.renderStatus(i, status)
-        } else if(minutes < 40 && !(item.status_en == "Canceled")){
-            let status = getStatusByName("waiting");
-            item.status_ru = status.status_ru
-            item.status_en = status.status_en
-            item.status_ch = status.status_ch
-
-            actions.renderStatus(i, status)
-        }        
-
-        return item;
-        
-    })
-
-    actions.setGateStyle(initial);
 }
 
 function setGlobalTimer() {
     updateCurrentDateTime();
     checkTime();
+    actions.renderClosedDestinations(state.closedDestinations)
+
+    actions.removeChildFromDOM();
+    const parentRoot = document.querySelector('.schedule-section_open');
+    parentRoot.insertAdjacentHTML('afterbegin', actions.renderItems(state.destinations))
+    
+    actions.setGateStyle(state.closedDestinations);
     actions.setStatusStyle();
 
     timeOut = setTimeout(setGlobalTimer, 3000);
@@ -131,9 +148,9 @@ window.onload = function() {
     headerActions.renderCurrentTime(formatCurrentTime());
 
     setDestinationsTime();
-    const parentRoot = document.querySelectorAll('.schedule-section');
-    parentRoot[0].insertAdjacentHTML('afterbegin', actions.renderItems(state.destinations).join(''))
+    const parentRoot = document.querySelector('.schedule-section_open');
+    parentRoot.insertAdjacentHTML('beforeend', actions.renderItems(state.destinations))
     
     actions.setStatusStyle();    
-    // setGlobalTimer();
+    setGlobalTimer();
 }

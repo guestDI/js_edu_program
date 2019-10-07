@@ -61,12 +61,26 @@ export const renderItems = data => {
         html.push(renderItem(item));
     })
 
-    return html;
+    return (
+        html.join('')
+    )
+}
+
+export const renderClosedDestinations = data => {
+    const closedDestinations = document.querySelector('ul.schedule-section_closed');
+    removeChildFromClosedDestinations();
+    closedDestinations.insertAdjacentHTML('afterbegin', renderItems(data))
+}
+
+export const removeChildFromClosedDestinations = () => {
+    while (document.querySelector('.schedule-section_closed').hasChildNodes()) {
+        document.querySelector('.schedule-section_closed').removeChild(document.querySelector('.schedule-section_closed').lastChild);
+      }
 }
 
 export const removeChildFromDOM = () => {
-    while (document.querySelector('.schedule-section').hasChildNodes()) {
-        document.querySelector('.schedule-section').removeChild(document.querySelector('.schedule-section').lastChild);
+    while (document.querySelector('.schedule-section_open').hasChildNodes()) {
+        document.querySelector('.schedule-section_open').removeChild(document.querySelector('.schedule-section_open').lastChild);
       }
 }
 

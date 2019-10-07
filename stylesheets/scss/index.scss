@@ -56,7 +56,7 @@ body {
     list-style-type: none;
     padding-left: 0%;
 
-    header {
+    & > div {
       padding-left: 63px;
       padding-top: 3px;
 
@@ -109,6 +109,7 @@ body {
     @include for-phone-screens {
       flex-direction: column;
       width: 100%;
+      height: auto;
     }
 
     &_cancelled {
@@ -288,7 +289,7 @@ header {
 
 // flip effect start
 .flip {
-  // perspective: 1000px;
+  perspective: 1000px;
   
   span.flip-text {
     display: inline-block;
@@ -322,6 +323,7 @@ header {
       70%, 100% {transform: rotateX(0deg)}
   }
 }
+//add opacity
 
 // flip effect end
 
