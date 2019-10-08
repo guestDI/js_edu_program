@@ -7,9 +7,9 @@
     "time": "16:20",
     "gate": "D2",
     "gate_time": "3 min",
-    "status_ru": "Завершение посадки",
-    "status_en": "Last Call",
-    "status_ch": "登陸完成",
+    "status_ru": "Посадка завершена",
+    "status_en": "Gate Closed",
+    "status_ch": "閘門關閉",
     "flights": ["KL2894", "SU1862"]
   },
   {

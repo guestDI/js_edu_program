@@ -1,1 +1,3 @@
-const state = {};
+export default (function (UICtrl, FlightsCtrl){
+
+}())
