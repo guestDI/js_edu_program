@@ -20,6 +20,8 @@
   "homepage": "https://github.com/guestDI/js_edu_program#readme",
   "devDependencies": {
     "@babel/core": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/register": "^7.6.2",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "css-loader": "^3.2.0",
@@ -34,7 +36,6 @@
     "webpack-dev-server": "^3.8.1"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.6.2",
     "babel-polyfill": "^6.26.0",
     "moment": "^2.24.0"
   }

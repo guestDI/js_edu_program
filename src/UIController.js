@@ -7,7 +7,8 @@ const UIController = (function(){
         closedFlightsSelector: '.schedule-section_closed',
         openFlightsSelector: '.schedule-section_open',
         secondaryLanguageSelector: '.sub-text_color > span',
-        subCityLanguageSelector: '.sub-city'    
+        subCityLanguageSelector: '.sub-city',
+        subCityLanguageSelectorContainer: '.flip'
     };
 
     const renderFilghts = flights => {
@@ -61,7 +62,7 @@ const UIController = (function(){
                         <div>
                             <span>${item.status_ru}</span>
                         </div>
-                        <div class="sub-text_color flip">
+                        <div class="sub-text_color">
                             <span></span>
                         </div>
                     </div>
@@ -101,8 +102,34 @@ const UIController = (function(){
         renderCityOnSecondaryLanguage: function(data, lng){
             let flightsHtml = document.querySelectorAll(DOMStrings.subCityLanguageSelector);    
             data.forEach((f, i) => {
-                flightsHtml[i].innerHTML = f[lng];    
+                let n = 0;
+                function typeNewCity() {
+                    if (n <= f[lng].length) {
+                        flightsHtml[i].innerHTML = f[lng].slice(0, n);
+                      n++;
+                      setTimeout(typeNewCity, 40);
+                    }
+                }
+                if (n == 0) { 
+                    typeNewCity();
+                }                                   
             });
+        },
+
+        removeScondaryCity: function(data, lng){
+            let flightsHtml = document.querySelectorAll(DOMStrings.subCityLanguageSelector);
+
+            flightsHtml.forEach((f, i) => {
+                let text = f.innerHTML;
+
+                if (text.length > 0) {
+                    f.innerHTML = text.slice(0, text.length - 1);
+                //   setTimeout(removeScondaryCity, 40);
+                } else if (text.length == 0) {
+                    this.renderCityOnSecondaryLanguage(data, lng);
+                }
+            })
+            
         }
     }
 
