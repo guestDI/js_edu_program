@@ -18,6 +18,7 @@ html {
 
 .sub-city {
   width: 40%;
+  // overflow: hidden;
 }
 
 .sub-text_color {
@@ -287,24 +288,43 @@ header {
   }
 }
 
-// flip effect start
-.flip {
-  transition: all 1s;
-  max-height: 300px;
-  
+// show/hide effect
+.hide {
+  max-height: 0;
+  padding: 0 10px;
+  border: none;
+  overflow: hidden;
+  transition: max-height 0.6s, padding 1s;
 }
 
-.flip.flip-text {
-  opacity:0;
-      max-height: 0;
+.show{
+  max-height: auto;
+  transition: max-height 0.6s;
+}
 
-  @include for-phone-screens {
-    width: 100%;
+// show/hide effect end
+
+//type effect
+.flip{
+  transition: all 2s;
+
+  .type {
+    animation: type 4s steps(60, end); 
   }
+  
+  @keyframes type{ 
+    0%{width: 0;}
+    50%{width: 0;}
+    100%{ width: 100; } 
+  } 
 }
-//add opacity
 
-// flip effect end
+.pre-animation{
+  opacity: 0;
+}
+
+
+//type effect end
 
 footer {
   display: block;

@@ -21,6 +21,18 @@ const UIController = (function(){
         return html.join('');
     }
 
+    const getElementToMove = (id) => {
+        const flights = document.querySelector(DOMStrings.openFlightsSelector).querySelectorAll(`[data-item-id]`);
+        let element = null;
+        flights.forEach(f => {
+            if(f.getAttribute("data-item-id") == id){
+                element = f;
+            }
+        })
+
+        return element;
+    }
+
     return {
         renderCurrentDate: function(date) {
             const dateElement = document.querySelector(DOMStrings.currentDateSelector);
@@ -34,9 +46,9 @@ const UIController = (function(){
 
         renderItem: function(item) {
             return `
-                <li class="destination-block-wrapper data-item-id=${item.id}">
+                <li class="destination-block-wrapper" data-item-id=${item.id}>
                     <div class="destination-block time sub-text_color">
-                        <time>${item.time}</time>
+                        <time>${item.dateTime}</time>
                     </div>
                     <div class="destination-block flights-destination">
                         <div class="left city">
@@ -70,6 +82,22 @@ const UIController = (function(){
             `
         },
 
+        destroy: function(id){
+            let elementToRemove = getElementToMove(id);
+            
+            if(elementToRemove){
+                elementToRemove.classList.add('hide');
+            }
+        },
+
+        // createNew: function(item){
+        //     renderItem(item);
+            
+        //     if(elementToRemove){
+        //         elementToRemove.classList.add('hide');
+        //     }
+        // },
+
         renderItems: function(data) {
             let closedFlightsHtml = [];
             let openFlightsHtml = [];
@@ -95,41 +123,32 @@ const UIController = (function(){
         renderStatusOnSecondaryLanguage: function(data, lng){
             let flightsHtml = document.querySelectorAll(DOMStrings.secondaryLanguageSelector);    
             data.forEach((f, i) => {
-                flightsHtml[i].innerHTML = f[lng];    
+                flightsHtml[i].innerHTML = f[lng]; 
+                   
             });
         },
 
         renderCityOnSecondaryLanguage: function(data, lng){
             let flightsHtml = document.querySelectorAll(DOMStrings.subCityLanguageSelector);    
+
             data.forEach((f, i) => {
-                let n = 0;
-                function typeNewCity() {
-                    if (n <= f[lng].length) {
-                        flightsHtml[i].innerHTML = f[lng].slice(0, n);
-                      n++;
-                      setTimeout(typeNewCity, 40);
-                    }
-                }
-                if (n == 0) { 
-                    typeNewCity();
-                }                                   
+                // flightsHtml[i].classList.add('pre-animation')
+                flightsHtml[i].innerHTML = f[lng];  
+                // flightsHtml[i].classList.remove('pre-animation')            
+                
             });
+            
         },
 
-        removeScondaryCity: function(data, lng){
-            let flightsHtml = document.querySelectorAll(DOMStrings.subCityLanguageSelector);
-
-            flightsHtml.forEach((f, i) => {
-                let text = f.innerHTML;
-
-                if (text.length > 0) {
-                    f.innerHTML = text.slice(0, text.length - 1);
-                //   setTimeout(removeScondaryCity, 40);
-                } else if (text.length == 0) {
-                    this.renderCityOnSecondaryLanguage(data, lng);
-                }
-            })
+        setGateStyle: function(data){
+            const gate = document.querySelectorAll(DOMStrings.gateSelector);
             
+            data.forEach((item, i) => {
+                if(item.status_en == "Gate Closed"){
+                    gate[i].querySelector("img").classList.add("step_closed");
+                    gate[i].style.color = "#d17d06"
+                }
+            })   
         }
     }
 
