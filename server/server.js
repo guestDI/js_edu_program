@@ -7,10 +7,30 @@ import moment from 'moment';
 const hostname = '127.0.0.1';
 const port = 5000;
 
+//Destination constructor
+const Destination = class {
+  constructor(id, destination_ru, destination_en, destination_ch, dateTime, gate, gate_time, status_ru, status_en, status_ch, flights) {
+    this.id = id;
+    this.destination_ru = destination_ru;
+    this.destination_en = destination_en;
+    this.destination_ch = destination_ch;
+    this.dateTime = dateTime;
+    this.gate = gate;
+    this.gate_time = gate_time;
+    this.status_ru = status_ru;
+    this.status_en = status_en;
+    this.status_ch = status_ch;
+    this.flights = flights;
+  }
+};
+//Destination constructor
+
 const destinationsJson = fs.readFileSync(`${path.join(__dirname, '../data/destinations.json')}`, 'utf-8');
 const statusesJson = fs.readFileSync(`${path.join(__dirname, '../data/statuses.json')}`, 'utf-8');
-let destinationsData = JSON.parse(destinationsJson);
+const citiesJson = fs.readFileSync(`${path.join(__dirname, '../data/cities.json')}`, 'utf-8');
+const destinationsData = JSON.parse(destinationsJson);
 const statusesData = JSON.parse(statusesJson);
+const citiesData = JSON.parse(citiesJson);
 
 const state = {
   destinations: destinationsData.slice(),
@@ -66,39 +86,71 @@ const checkFlightStatus = () => {
     })
 }
 
+const generateRandomNumber = (max, min) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const updateCurrentDateTime = () => {
   const current = state.currentDate;
 
   state.currentDate = moment(current).add(1, 'm').toDate();
 }
 
-function setGlobalTimer() {
-  updateCurrentDateTime();
-  checkFlightStatus();
+const createNewRecord = () => {
+  let random = Math.floor(Math.random() * Math.floor(citiesData.length));
+  const city = citiesData[random]
+  let random_ascii = String.fromCharCode(generateRandomNumber(90, 65));
+  let numberOfFlights = generateRandomNumber(3, 1);
+  let destinationFlights = [];
+  let waitingStatus = statusesData.waiting;
+  let randomId = '_' + Math.random().toString(36).substr(2, 9);
+  let newFlightDate = moment(state.currentDate).add(50, 'm').toDate()
 
-  setTimeout(setGlobalTimer, 5000);
+  for(let i=0; i <= numberOfFlights; i++){
+    let ascii = generateRandomNumber(90, 65)
+    destinationFlights.push(`${String.fromCharCode(ascii)}${i}${ascii}${i}`)
+  }
+
+  let dest = new Destination(randomId, city.destination_ru, city.destination_en, city.destination_ch, newFlightDate, `${random_ascii}${random+1}`,
+                             `${random + 2} min`, waitingStatus.status_ru, waitingStatus.status_en, waitingStatus.status_ch, destinationFlights)
+
+ return dest;
 }
 
+function setGlobalTimer() {
+  state.destinations.push(createNewRecord());
+
+  setTimeout(setGlobalTimer, 10000);
+}
+
+function setStatusTimer(){
+    updateCurrentDateTime();
+    checkFlightStatus();
+
+    setTimeout(setStatusTimer, 3000);
+}
+
+// setGlobalTimer();
+// setStatusTimer()
+setDestinationsTime();
+
 const server = http.createServer((req, res) => {
- 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); 
+    
     const pathName = url.parse(req.url, true).pathname;
-    const id = url.parse(req.url, true).query.id;
-
-    setDestinationsTime();
-    //setGlobalTimer();
+    const id = url.parse(req.url, true).query.id;   
        
     if(pathName === '/destinations' || pathName === '/'){
-      res.writeHead(200, { 'Content-Type': 'application/json'});
+      res.writeHead(200, { 'Content-Type': 'text/html'});
       res.end(JSON.stringify(state.destinations));
     } 
     else if (pathName === '/statuses'){
-      res.writeHead(200, { 'Content-Type': 'application/json'});
+      res.writeHead(200, { 'Content-Type': 'text/html'});
       res.end(statusesJson);
     } 
     else if (pathName === '/destination' && id < state.destinations.length){
-      res.writeHead(200, { 'Content-Type': 'application/json'});
+      res.writeHead(200, { 'Content-Type': 'text/html'});
       res.end(JSON.stringify(getDestinationById(id)));
     }
     else {

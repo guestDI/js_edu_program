@@ -290,37 +290,35 @@ header {
 
 // show/hide effect
 .hide {
-  max-height: 0;
+  height: 0;
   padding: 0 10px;
   border: none;
   overflow: hidden;
-  transition: max-height 0.6s, padding 1s;
+  transition: height 600ms linear, padding 1s;
 }
 
 .show{
-  max-height: auto;
-  transition: max-height 0.6s;
+  border-bottom: 1px solid #0e131a;
+  padding: 5px 10px;
+  height: 50px;
+  transition: max-height 0.6s, padding 0.6s;
 }
 
 // show/hide effect end
 
 //type effect
-.flip{
-  transition: all 2s;
-
-  .type {
-    animation: type 4s steps(60, end); 
-  }
-  
-  @keyframes type{ 
-    0%{width: 0;}
-    50%{width: 0;}
-    100%{ width: 100; } 
-  } 
+.type {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation: 
+    typing 4.5s steps(40, end),
 }
 
-.pre-animation{
-  opacity: 0;
+@keyframes typing {
+  from { width: 0 }
+  to { width: 40% }
 }
 
 

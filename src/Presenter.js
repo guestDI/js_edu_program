@@ -5,7 +5,7 @@ import Model from './Model';
 const presenter = (function(flightModel, flightView){
     const state = {
         currentDate: Date.getDate,
-        flights: [],
+        destinations: [],
         changedFlights: [],
         current_secondary_lng: 'destination_ch',
         timeOut: null
@@ -15,8 +15,8 @@ const presenter = (function(flightModel, flightView){
         return moment(state.currentDate).format(format)    
     }
 
-    const formatFlightTime = flights => {
-        let updated = flights.map(f => {
+    const formatDepartureTime = destinations => {
+        let updated = destinations.map(f => {
             const initialTime = f.dateTime          
             f.dateTime = moment(initialTime).format("HH:mm")
             
@@ -26,24 +26,34 @@ const presenter = (function(flightModel, flightView){
         return updated;
     }
 
-    const objectsEqual = (o1, o2) =>
-            Object.keys(o1).length === Object.keys(o2).length 
-                && Object.keys(o1).every(p => o1[p] === o2[p]);
+    const checkNewStateForNewFlight = (newState, prevState) => {
+        return newState.filter(item => !prevState.some(other => item.id == other.id));
+    }
+
+    const checkNewStateForChanges = (newState, prevState) => {
+        let props = ['id', 'status_en'];
+
+        console.log(newState, 'newstate')
+        console.log(prevState, 'prevstate')
+    }
 
     const setGlobalTimer = () => {
-        const initialState = state.flights.slice();
         flightModel.getDestinations()
             .then(r => {
-                let state = r.slice()
+                let results = checkNewStateForNewFlight(r, state.destinations)
+                
+                // checkNewStateForChanges(r, initialState)
+                // checkNewStateForNewFlight(r, state.flights)
                 // compareFlightStates(initialState, r)
-                // objectsEqual(state.flights, r)
-                // flightView.renderItems(formatFlightTime(state))
+                // flightView.renderItems(formatFlightTime(results))
+                // flightView.renderClosedItem(results[0])
 
-                // state.flights = state;
+                state.flights = r.slice();
             })
 
         flightView.destroy(5)    
-        setTimeout(setGlobalTimer, 2000);
+        flightView.setStyleOfStatusContainer();
+        setTimeout(setGlobalTimer, 5000);
     }
 
     const changeSecondaryLanguage = () => {
@@ -85,11 +95,10 @@ const presenter = (function(flightModel, flightView){
                     let resultState = r.slice()
                     flightView.renderCurrentDate(formattedCurrentDateTime("DD.MM.YYYY"))
                     flightView.renderCurrentTime(formattedCurrentDateTime("HH:mm"))
-                    flightView.renderItems(formatFlightTime(resultState));
-                    flightView.setGateStyle(resultState);
+                    flightView.printInitialListOfDestinations(formatDepartureTime(resultState));
 
-                    state.flights = resultState;
-                    setLangTimeout();
+                    state.destinations = resultState;
+                    // setLangTimeout();
                 })
 
                 // setGlobalTimer();
