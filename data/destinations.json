@@ -91,7 +91,7 @@
     "flights": ["SU2024"]
   },
   {
-    "id": 7,
+    "id": 8,
     "destination_ru": "Иркутск",
     "destination_en": "Irkutsk",
     "destination_ch": "伊爾庫茨克",
@@ -104,7 +104,7 @@
     "flights": ["KL2892", "SU1710"]
   },
   {
-    "id": 8,
+    "id": 9,
     "destination_ru": "Сочи",
     "destination_en": "Sochi",
     "destination_ch": "索契",
@@ -117,7 +117,7 @@
     "flights": ["AF4952", "SU1414"]
   },
   {
-    "id": 9,
+    "id": 10,
     "destination_ru": "Уфа",
     "destination_en": "Ufa",
     "destination_ch": "烏法",
@@ -130,7 +130,7 @@
     "flights": ["N4195"]
   },
   {
-    "id": 10,
+    "id": 11,
     "destination_ru": "Париж",
     "destination_en": "Paris",
     "destination_ch": "巴黎",

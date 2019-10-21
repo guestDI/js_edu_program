@@ -7,23 +7,19 @@ import moment from 'moment';
 const hostname = '127.0.0.1';
 const port = 5000;
 
-//Destination constructor
-const Destination = class {
-  constructor(id, destination_ru, destination_en, destination_ch, dateTime, gate, gate_time, status_ru, status_en, status_ch, flights) {
-    this.id = id;
-    this.destination_ru = destination_ru;
-    this.destination_en = destination_en;
-    this.destination_ch = destination_ch;
-    this.dateTime = dateTime;
-    this.gate = gate;
-    this.gate_time = gate_time;
-    this.status_ru = status_ru;
-    this.status_en = status_en;
-    this.status_ch = status_ch;
-    this.flights = flights;
-  }
-};
-//Destination constructor
+function Destination(id, destination_ru, destination_en, destination_ch, dateTime, gate, gate_time, status_ru, status_en, status_ch, flights){
+  this.id = id;
+  this.destination_ru = destination_ru;
+  this.destination_en = destination_en;
+  this.destination_ch = destination_ch;
+  this.dateTime = dateTime;
+  this.gate = gate;
+  this.gate_time = gate_time;
+  this.status_ru = status_ru;
+  this.status_en = status_en;
+  this.status_ch = status_ch;
+  this.flights = flights;
+}
 
 const destinationsJson = fs.readFileSync(`${path.join(__dirname, '../data/destinations.json')}`, 'utf-8');
 const statusesJson = fs.readFileSync(`${path.join(__dirname, '../data/statuses.json')}`, 'utf-8');
@@ -37,15 +33,18 @@ const state = {
   currentDate: Date.getDate
 }
 
+const generateRandomNumber = (max, min) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const getDestinationById = id => {
   return destinationsData.filter(d => d.id == id);
 }
 
 const setDestinationsTime = () => {
-  let initial = state.destinations.slice();
   let updatedDestinations = [];
 
-  updatedDestinations = initial.map((item, i) => {
+  updatedDestinations = state.destinations.map((item, i) => {
       let t = moment(Date.getDate).add((7 + i)*3, 'm').toDate();
       item.dateTime = t;
       
@@ -86,10 +85,6 @@ const checkFlightStatus = () => {
     })
 }
 
-const generateRandomNumber = (max, min) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 const updateCurrentDateTime = () => {
   const current = state.currentDate;
 
@@ -104,7 +99,7 @@ const createNewRecord = () => {
   let destinationFlights = [];
   let waitingStatus = statusesData.waiting;
   let randomId = '_' + Math.random().toString(36).substr(2, 9);
-  let newFlightDate = moment(state.currentDate).add(50, 'm').toDate()
+  let newFlightDate = moment(state.currentDate).add(70, 'm').toDate()
 
   for(let i=0; i <= numberOfFlights; i++){
     let ascii = generateRandomNumber(90, 65)
@@ -119,7 +114,7 @@ const createNewRecord = () => {
 
 function setGlobalTimer() {
   state.destinations.push(createNewRecord());
-
+  // console.log('ping')
   setTimeout(setGlobalTimer, 10000);
 }
 
@@ -133,6 +128,7 @@ function setStatusTimer(){
 // setGlobalTimer();
 // setStatusTimer()
 setDestinationsTime();
+checkFlightStatus();
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

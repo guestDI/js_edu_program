@@ -301,28 +301,11 @@ header {
   border-bottom: 1px solid #0e131a;
   padding: 5px 10px;
   height: 50px;
-  transition: max-height 0.6s, padding 0.6s;
+  overflow: visible;
+  transition: height 600ms linear, padding 1s;
 }
 
 // show/hide effect end
-
-//type effect
-.type {
-  overflow: hidden; /* Ensures the content is not revealed until the animation */
-  white-space: nowrap; /* Keeps the content on a single line */
-  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: .15em; /* Adjust as needed */
-  animation: 
-    typing 4.5s steps(40, end),
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 40% }
-}
-
-
-//type effect end
 
 footer {
   display: block;

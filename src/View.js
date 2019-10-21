@@ -7,15 +7,14 @@ const UIController = (function(){
         currentTimeSelector: '.current-date-block > div.time > time',
         closedFlightsSelector: '.schedule-section_closed',
         openFlightsSelector: '.schedule-section_open',
-        secondaryLanguageSelector: '.sub-text_color > span',
         subCityLanguageSelector: '.sub-city',
         subCityLanguageSelectorContainer: '.flip',
-        statusSelector: '.status'
+        statusSelector: '.status',
+        primaryStatusSelector: '.status > .primary_status > span',
+        secondaryStatusSelector: '.status > .sub-text_color > span'
     };
 
-    
-    
-    // const firstLine = combineDestinationRecord()
+    const destinationRecords = [];     
 
     const printFilghts = flights => {
         let html = [];
@@ -26,18 +25,6 @@ const UIController = (function(){
     
         return html.join('');
     }
-
-    // const getElementToMove = (id) => {
-    //     const flights = document.querySelector(DOMStrings.openFlightsSelector).querySelectorAll(`[data-item-id]`);
-    //     let element = null;
-    //     flights.forEach(f => {
-    //         if(f.getAttribute("data-item-id") == id){
-    //             element = f;
-    //         }
-    //     })
-
-    //     return element;
-    // }
 
     function destinationRecord(destination) {
         const wrapperElement = document.createElement('li');
@@ -50,16 +37,27 @@ const UIController = (function(){
         const element = wrapperElement;
 
         return {
+            getElementId: function(){
+                return element.getAttribute('id');
+            },
+
             changeFlightStatus: function(status){
                 element.querySelector(DOMStrings.secondaryLanguageSelector).innerHTML = status;
             },
 
-            changeDestinationLanguage: function(dest){
-                element.querySelector(DOMStrings.secondaryLanguageSelector).innerHTML = dest;
-            },
-
             printToTheDom: function(section){
                 document.querySelector(section).appendChild(element);
+            },
+
+            printClosedToTheDom: function(){
+                document.querySelector(DOMStrings.closedFlightsSelector).appendChild(element);
+                setTimeout(() => element.classList.add('show'), 500)
+            },
+
+            printNewDestination: function(section){
+                element.classList.add('hide')
+                document.querySelector(section).appendChild(element);
+                setTimeout(() => element.classList.add('show'), 0)
             },
 
             styleDeparuredFlight: function(){
@@ -71,7 +69,25 @@ const UIController = (function(){
                 element.querySelector(DOMStrings.statusSelector).classList.add("status_cancelled");
                 element.querySelector(DOMStrings.statusSelector).getElementsByTagName("span")[1].style.color = "#ff3333"
                 element.getElementsByTagName("time")[0].style.visibility = 'hidden'
-            }
+            },
+
+            changeDestinationLanguage: function(destination){
+                element.querySelector(DOMStrings.subCityLanguageSelector).innerHTML = destination;
+            },
+
+            changeStatusLanguage: function(status){
+                element.querySelector(DOMStrings.secondaryStatusSelector).innerHTML = status;
+            },
+
+            changeStatus: function(status_ru, secondaryStatus){
+                element.querySelector(DOMStrings.primaryStatusSelector).innerHTML = status_ru;
+                element.querySelector(DOMStrings.secondaryStatusSelector).innerHTML = secondaryStatus;
+            },
+
+            destroy: function(){
+                element.classList.add('hide');
+                // element.remove();
+            },
         };
     }
 
@@ -100,10 +116,10 @@ const UIController = (function(){
                     </div>
                 </div>
                 <div class="destination-block status">
-                    <div>
+                    <div class="primary_status">
                         <span>${status_ru}</span>
                     </div>
-                    <div class="sub-text_color">
+                    <div class="sub-text_color sub_status">
                         <span>${status_en}</span>
                     </div>
                 </div>
@@ -121,44 +137,34 @@ const UIController = (function(){
             dateElement.innerHTML = time;
         },
 
-        returnDestinationRecord: function(destination){
-            const f1 = destinationRecord(destination);
-
-            return f1;
+        returnDestinationRecords: function(){
+            return destinationRecords;
         },
 
-        // destroy: function(id){
-        //     let elementToRemove = getElementToMove(id);
-            
-        //     if(elementToRemove){
-        //         elementToRemove.classList.add('hide');
-        //     }
-        // },
+        createDestination: function(data){
+            if(data.length > 0){
+                data.map(item => {
+                    let dest = destinationRecord(item);
 
-        // createNew: function(newFlights){
-        //     const html = [];
-        //     let elementToAdd = null;
-            
-        //     if(newFlights.length > 0){
-        //         newFlights.forEach((f, i) => {
-        //             elementToAdd = this.renderItem(f);
-        //             document.querySelector(DOMStrings.openFlightsSelector).insertAdjacentHTML('beforeend', elementToAdd);
-        //             if(elementToAdd){
-        //                 new DOMParser().parseFromString(elementToAdd , 'text/html').classList.add('show')
-        //             }
-        //         })
-        //     }
-        // },
+                    if(item.status_en === "Gate Closed"){
+                        dest.printNewDestination(DOMStrings.closedFlightsSelector);
+                        dest.styleDeparuredFlight();
+                    } else if(item.status_en === "Canceled") {
+                        dest.printNewDestination(DOMStrings.openFlightsSelector)
+                        dest.styleCanceledDeparture() 
+                    } 
+                    else {
+                        dest.printNewDestination(DOMStrings.openFlightsSelector)
+                    }
+                    
+                    destinationRecords.push(dest);
 
-        // renderClosedItem: function(item){
-        //     const el = this.renderItem(item);
-        //     document.querySelector(DOMStrings.closedFlightsSelector).insertAdjacentHTML('afterbegin', el);
+                })
+            }
 
-        //     el.classList.add('show')           
+        },
 
-        // },
-
-        printInitialListOfDestinations: function(data) {
+        printListOfDestinations: function(data) {
             if(data.length > 0){
                 data.map(item => {
                     let dest = destinationRecord(item);
@@ -174,32 +180,11 @@ const UIController = (function(){
                         dest.printToTheDom(DOMStrings.openFlightsSelector)
                     }
                     
+                    destinationRecords.push(dest);
+
                 })
             }
         },
-
-        // renderStatusOnSecondaryLanguage: function(data, lng){
-        //     let flightsHtml = document.querySelectorAll(DOMStrings.secondaryLanguageSelector);    
-        //     data.forEach((f, i) => {
-        //         flightsHtml[i].innerHTML = f[lng]; 
-                   
-        //     });
-        // },
-
-        // renderCityOnSecondaryLanguage: function(data, lng){
-        //     let flightsHtml = document.querySelectorAll(DOMStrings.subCityLanguageSelector);
-        //     // const destinationRows = document.querySelectorAll(DOMStrings.destinationRowSelector);
-        //     // const statusBlocks = document.querySelectorAll('.flip');
-
-        //     if(data && data.length > 0){
-        //         data.forEach((f, i) => {
-        //             // statusBlocks[i].classList.add('type')
-        //             flightsHtml[i].innerHTML = f[lng];                  
-        //         });
-        //     }
-            
-        // },
-
     }
 
 })();
