@@ -32,7 +32,6 @@ const presenter = (function(flightModel, flightView){
         if(newState.length != prevState.length){
             diff = newState.filter(({id}) => !prevState.find(o => o.id == id));        
         }      
-
         return diff;
     }
 
@@ -51,8 +50,11 @@ const presenter = (function(flightModel, flightView){
             if(obj){
                 let secondaryLng = state.current_secondary_lng === 'en' ? obj.status["status_en"] : obj.status["status_ch"]
                 d.changeStatus(obj.status["status_ru"], secondaryLng);
+
+                if(obj.status['status_en'] == 'Canceled'){
+                    d.styleCanceledDeparture();
+                } 
             }
-            
         })
     }
 
@@ -72,12 +74,29 @@ const presenter = (function(flightModel, flightView){
         })
     }
 
+    const printInitialListOfDestinations = data => {
+        if(data.length){
+            data.forEach(d => {
+                let destination = flightView.createDestination(d);
+
+                destination.printToTheDom(d.status['status_en']);
+                if(d.status['status_en'] == 'Canceled'){
+                    destination.styleCanceledDeparture();
+                } 
+            })
+        }
+    }
+
     const printNewDestination = data => {
         if(data.length){
             data.forEach(d => {
                 let destination = flightView.createDestination(d);
 
-                destination.printNewDestination();
+                let secondaryLng = state.current_secondary_lng === 'en' ? "status_en" : "status_ch"
+                destination.printNewDestination(d.status[secondaryLng]);
+                if(d.status['status_en'] == 'Canceled'){
+                    destination.styleCanceledDeparture();
+                } 
             })
         }
     }
@@ -89,15 +108,19 @@ const presenter = (function(flightModel, flightView){
                 let changedDestinations = checkNewStateForChanges(r, state.destinations);       
 
                 if(newDestinations.length > 0){
-                    printNewDestination(formatDepartureTime(newDestinations));                
+                    printNewDestination(formatDepartureTime(newDestinations));       
+                    
+                    state.destinations = r.slice();
                 } 
                 
                 if (changedDestinations.length > 0){
                     changeStatus(changedDestinations)
                     moveRecordToClosed(changedDestinations)                    
+
+                    state.destinations = r.slice();
                 }    
                 
-                state.destinations = r.slice();
+                
             })
 
         setTimeout(setGlobalTimer, 3000);
@@ -148,13 +171,13 @@ const presenter = (function(flightModel, flightView){
                     let resultState = r.slice()
                     flightView.renderCurrentDate(formattedCurrentDateTime("DD.MM.YYYY"))
                     flightView.renderCurrentTime(formattedCurrentDateTime("HH:mm"))
-                    flightView.createDestinations(formatDepartureTime(resultState));
+                    printInitialListOfDestinations(formatDepartureTime(resultState));
 
                     state.destinations = resultState;
                 })
 
                 setLangTimeout();
-                // setGlobalTimer();
+                setGlobalTimer();
                 
         }
     }    

@@ -48,8 +48,9 @@ const UIController = (function(){
                 element.querySelector(DOMStrings.secondaryLanguageSelector).innerHTML = status;
             },
 
-            printToTheDom: function(section){
-                document.querySelector(section).appendChild(element);
+            printToTheDom: function(status){
+                let section = status == "Gate Closed" ? DOMStrings.closedFlightsSelector : DOMStrings.openFlightsSelector
+                document.querySelector(section).appendChild(element);                
             },
 
             printClosedToTheDom: function(){
@@ -57,9 +58,10 @@ const UIController = (function(){
                 setTimeout(() => element.classList.add('show'), 500)
             },
 
-            printNewDestination: function(){
+            printNewDestination: function(status){
+                let section = status == "Gate Closed" ? DOMStrings.closedFlightsSelector : DOMStrings.openFlightsSelector
                 element.classList.add('hide')
-                document.querySelector(DOMStrings.openFlightsSelector).appendChild(element);
+                document.querySelector(section).appendChild(element);
                 setTimeout(() => element.classList.add('show'), 0)
             },
 
@@ -72,6 +74,12 @@ const UIController = (function(){
                 element.querySelector(DOMStrings.statusSelector).classList.add("status_cancelled");
                 element.querySelector(DOMStrings.statusSelector).getElementsByTagName("span")[1].style.color = "#ff3333"
                 element.getElementsByTagName("time")[0].style.visibility = 'hidden'
+            },
+
+            styleScheduledDestination: function(){                
+                element.querySelector(DOMStrings.statusSelector).classList.remove("status_cancelled");
+                element.querySelector(DOMStrings.statusSelector).getElementsByTagName("span")[1].style.color = "#b8b8b8"
+                element.getElementsByTagName("time")[0].style.visibility = 'visible'
             },
 
             changeDestinationLanguage: function(destination){
@@ -148,28 +156,6 @@ const UIController = (function(){
             let newDestination = destinationRecord(destination);
             destinationRecords.push(newDestination);
             return newDestination;
-        },
-
-        createDestinations: function(data){
-            if(data.length > 0){
-                data.map(item => {
-                    let dest = destinationRecord(item);
-
-                    if(item.status_en === "Gate Closed"){
-                        dest.printToTheDom(DOMStrings.closedFlightsSelector);
-                        dest.styleDeparuredFlight();
-                    } else if(item.status_en === "Canceled") {
-                        dest.printToTheDom(DOMStrings.openFlightsSelector)
-                        dest.styleCanceledDeparture() 
-                    } 
-                    else {
-                        dest.printToTheDom(DOMStrings.openFlightsSelector)
-                    }
-                    
-                    destinationRecords.push(dest);
-
-                })
-            }
         },
     }
 

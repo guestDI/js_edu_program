@@ -40,23 +40,57 @@ const updateDestinationTime = () => {
 }
 
 const updateDestinationStatus = () => {
-    let minutes = null;
+  let minutes = null;
 
-    state.destinations.map(f => {
-        let destinationTime = moment(f.dateTime);
-        let duration = moment.duration(destinationTime.diff(state.currentDate));
-        minutes = duration.asMinutes();
-        
-        if(minutes < 15){
-          f.setDestinationStatus(statusesData["closed"])
-        } else if(minutes > 15 && minutes < 25){
-          f.setDestinationStatus(statusesData["last_call"])
-        } else if(minutes > 25 && minutes < 35){
-          f.setDestinationStatus(statusesData["boarding_now"])
-        } else if(minutes > 35){
-          f.setDestinationStatus(statusesData["waiting"])
-        }   
-    })
+  state.destinations.map(f => {
+      let destinationTime = moment(f.dateTime);
+      let duration = moment.duration(destinationTime.diff(state.currentDate));
+      minutes = duration.asMinutes();
+
+      if(minutes < 15){
+        f.setDestinationStatus(statusesData["closed"])
+      } else if(minutes > 15 && minutes < 25){
+        f.setDestinationStatus(statusesData["last_call"])
+      } else if(minutes > 25 && minutes < 35){
+        f.setDestinationStatus(statusesData["boarding_now"])
+      } else if(minutes > 35){
+        f.setDestinationStatus(statusesData["waiting"])
+      } 
+  })
+}
+
+const makeDestinationCanceled = () => {
+  let waitingDestinations = state.destinations.filter(d => d.status['status_en'] == 'Wait for boarding')
+  let random = helpers.generateRandomNumber(waitingDestinations.length - 1, 0)
+  let changedDestination = null;
+  let indexOfDestination = null;
+
+  if(waitingDestinations.length > 0){
+    changedDestination = waitingDestinations[random]
+    changedDestination.status = statusesData["canceled"]
+    changedDestination.dateTime = null
+  }
+
+  indexOfDestination = state.destinations.findIndex(d => d.id === changedDestination.id);
+
+  state.destinations.splice(indexOfDestination, 1, changedDestination) 
+}
+
+const makeDestinationScheduled = () => {
+  let edited = state.destinations.slice();
+  let canceledDestinations = state.destinations.filter(d => d.status['status_en'] == 'Canceled')
+  let changedDestination = null;
+  let indexOfDestination = null;
+
+  if(canceledDestinations.length > 0){
+    changedDestination = canceledDestinations[0]
+    changedDestination.status = statusesData["waiting"]
+  }
+
+  indexOfDestination = edited.findIndex(d => d.id === changedDestination.id);
+  edited.push(edited.splice(indexOfDestination, 1)[0]);
+  
+  state.destinations = edited;
 }
 
 const init = () => {
@@ -99,11 +133,18 @@ function setGlobalTimer() {
   updateDestinationStatus();
   state.destinations.push(createNewDestination());
   
-  setTimeout(setGlobalTimer, 5000);
+  setTimeout(setGlobalTimer, 7000);
+}
+
+function setTimerToMakeDestinationCanceled(){
+  makeDestinationCanceled();
+
+  setTimeout(setTimerToMakeDestinationCanceled, 13000);
 }
 
 init();
 // setGlobalTimer();
+// setTimerToMakeDestinationScheduled();
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

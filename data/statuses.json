@@ -19,7 +19,7 @@
         "status_en": "Wait for boarding",
         "status_ch": "等待登機"
     },
-    "cancelled": {
+    "canceled": {
         "status_ru": "Отменен",
         "status_en": "Canceled",
         "status_ch": "取消"
