@@ -7,6 +7,7 @@ const UIController = (function(){
         currentTimeSelector: '.current-date-block > div.time > time',
         closedFlightsSelector: '.schedule-section_closed',
         openFlightsSelector: '.schedule-section_open',
+        flightsSelector: '.flights',
         subCityLanguageSelector: '.sub-city',
         subCityLanguageSelectorContainer: '.flip',
         statusSelector: '.status',
@@ -19,9 +20,11 @@ const UIController = (function(){
     const printFilghts = flights => {
         let html = [];
     
-        flights.map(item => {
-            html.push(`<span>${item}</span>`);
-        })
+        if(flights){
+            flights.map(item => {
+                html.push(`<span>${item}</span>`);
+            })
+        } 
     
         return html.join('');
     }
@@ -54,9 +57,9 @@ const UIController = (function(){
                 setTimeout(() => element.classList.add('show'), 500)
             },
 
-            printNewDestination: function(section){
+            printNewDestination: function(){
                 element.classList.add('hide')
-                document.querySelector(section).appendChild(element);
+                document.querySelector(DOMStrings.openFlightsSelector).appendChild(element);
                 setTimeout(() => element.classList.add('show'), 0)
             },
 
@@ -84,14 +87,14 @@ const UIController = (function(){
                 element.querySelector(DOMStrings.secondaryStatusSelector).innerHTML = secondaryStatus;
             },
 
-            destroy: function(){
-                element.classList.add('hide');
+            collapseDestinationRecord: function(){
+                setTimeout(() => element.classList.toggle('hide'), 0);
                 // element.remove();
             },
         };
     }
 
-    function getDestinationHtmlTemplate({dateTime, destination_ru, destination_en, flights, gate_time, gate, status_ru, status_en}){
+    function getDestinationHtmlTemplate({dateTime, destination_ru, destination_en, flights, gate_time, gate, status}){
         return `<div class="destination-block time sub-text_color">
                     <time>${dateTime}</time>
                 </div>
@@ -117,10 +120,10 @@ const UIController = (function(){
                 </div>
                 <div class="destination-block status">
                     <div class="primary_status">
-                        <span>${status_ru}</span>
+                        <span>${status.status_ru}</span>
                     </div>
                     <div class="sub-text_color sub_status">
-                        <span>${status_en}</span>
+                        <span>${status.status_en}</span>
                     </div>
                 </div>
             `
@@ -141,30 +144,13 @@ const UIController = (function(){
             return destinationRecords;
         },
 
-        createDestination: function(data){
-            if(data.length > 0){
-                data.map(item => {
-                    let dest = destinationRecord(item);
-
-                    if(item.status_en === "Gate Closed"){
-                        dest.printNewDestination(DOMStrings.closedFlightsSelector);
-                        dest.styleDeparuredFlight();
-                    } else if(item.status_en === "Canceled") {
-                        dest.printNewDestination(DOMStrings.openFlightsSelector)
-                        dest.styleCanceledDeparture() 
-                    } 
-                    else {
-                        dest.printNewDestination(DOMStrings.openFlightsSelector)
-                    }
-                    
-                    destinationRecords.push(dest);
-
-                })
-            }
-
+        createDestination: function(destination){
+            let newDestination = destinationRecord(destination);
+            destinationRecords.push(newDestination);
+            return newDestination;
         },
 
-        printListOfDestinations: function(data) {
+        createDestinations: function(data){
             if(data.length > 0){
                 data.map(item => {
                     let dest = destinationRecord(item);

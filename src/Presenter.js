@@ -37,9 +37,8 @@ const presenter = (function(flightModel, flightView){
     }
 
     const checkNewStateForChanges = (newState, prevState) => {
-        // let props = ['id', 'status_en'];
         let diff = [];
-        diff = newState.filter(({id, status_ru}) => prevState.find(o => o.id == id && o.status_ru != status_ru));        
+        diff = newState.filter(({id, status}) => prevState.find(o => o.id == id && o.status['status_ru'] != status['status_ru']));        
         return diff;
     }
 
@@ -50,67 +49,58 @@ const presenter = (function(flightModel, flightView){
             let id = d.getElementId();
             let obj = changedDestinations.find(obj => obj.id == id);
             if(obj){
-                let secondaryLng = state.current_secondary_lng === 'en' ? obj["status_en"] : obj["status_ch"]
-                d.changeStatus(obj["status_ru"], secondaryLng);
+                let secondaryLng = state.current_secondary_lng === 'en' ? obj.status["status_en"] : obj.status["status_ch"]
+                d.changeStatus(obj.status["status_ru"], secondaryLng);
             }
             
         })
     }
 
-    const moveRecordToClosed = (changedDestinations) => {
+    const moveRecordToClosed = changedDestinations => {
         let destinations = flightView.returnDestinationRecords();
         let el = null;
 
         changedDestinations.forEach(d => {
-            if(d.status_ru == 'Посадка завершена'){
+            if(d.status['status_ru'] == 'Посадка завершена'){
                 el = destinations.find(destination => destination.getElementId() == d.id)
                 if(el){
-                    el.destroy()
-                    setTimeout(() => el.printClosedToTheDom(), 1000)
-                    
+                    el.collapseDestinationRecord()
+                    setTimeout(() => el.printClosedToTheDom(), 700)
+                    setTimeout(() => el.styleDeparuredFlight(), 800);
                 }
             }
         })
+    }
 
-        // console.log(el)
+    const printNewDestination = data => {
+        if(data.length){
+            data.forEach(d => {
+                let destination = flightView.createDestination(d);
+
+                destination.printNewDestination();
+            })
+        }
     }
 
     const setGlobalTimer = () => {
-        // let destinations = flightView.returnDestinationRecords();
-
         flightModel.getDestinations()
             .then(r => {
-                let results = checkNewStateForNewDestination(r, state.destinations);
-                let changedDestinations = checkNewStateForChanges(r, state.destinations);
-                if(results.length > 0){
-                    flightView.createDestination(formatDepartureTime(results));
-                // checkNewStateForChanges(r, initialState)
-                // checkNewStateForNewDestination(r, state.flights)
-                // compareFlightStates(initialState, r)
+                let newDestinations = checkNewStateForNewDestination(r, state.destinations);
+                let changedDestinations = checkNewStateForChanges(r, state.destinations);       
+
+                if(newDestinations.length > 0){
+                    printNewDestination(formatDepartureTime(newDestinations));                
+                } 
                 
-                    state.destinations = r.slice();
-                } else if (changedDestinations.length > 0){
+                if (changedDestinations.length > 0){
                     changeStatus(changedDestinations)
-                    moveRecordToClosed(changedDestinations)
-                    // console.log(changedDestinations)
-
-                    state.destinations = r.slice();
-                }
+                    moveRecordToClosed(changedDestinations)                    
+                }    
                 
-                
-
-                // if(changedDestinations.length > 0 ){
-                    // destinations.forEach(d => {
-                    //     let id = d.getElementId();
-                    //     let obj = state.destinations.find(obj => obj.id == id);
-                    //     d.changeStatus(obj[status_ru]);
-                    // })
-                // }
-
+                state.destinations = r.slice();
             })
 
-        // flightView.destroy(5)    
-        setTimeout(setGlobalTimer, 5000);
+        setTimeout(setGlobalTimer, 3000);
     }
 
     const changeSecondaryLanguage = () => {
@@ -144,12 +134,8 @@ const presenter = (function(flightModel, flightView){
             let id = d.getElementId();
             let obj = state.destinations.find(obj => obj.id == id);
             d.changeDestinationLanguage(obj[lng.destination_lng]);
-            d.changeStatusLanguage(obj[lng.status_lng])
+            d.changeStatusLanguage(obj.status[lng.status_lng])
         })
-        
-        // flightView.changeDestinationLanguage())
-
-        // flightView.renderStatusOnSecondaryLanguage(state.flights, lng.status_lng);
 
         setTimeout(setLangTimeout, 5000)
     }
@@ -162,13 +148,14 @@ const presenter = (function(flightModel, flightView){
                     let resultState = r.slice()
                     flightView.renderCurrentDate(formattedCurrentDateTime("DD.MM.YYYY"))
                     flightView.renderCurrentTime(formattedCurrentDateTime("HH:mm"))
-                    flightView.printListOfDestinations(formatDepartureTime(resultState));
+                    flightView.createDestinations(formatDepartureTime(resultState));
 
                     state.destinations = resultState;
                 })
 
-                // setLangTimeout();
-                setGlobalTimer();
+                setLangTimeout();
+                // setGlobalTimer();
+                
         }
     }    
     

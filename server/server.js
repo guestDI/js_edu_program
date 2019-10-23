@@ -1,134 +1,109 @@
-import fs from 'fs';
-import http from 'http';
-import path from 'path';
-import url from 'url';
-import moment from 'moment';
-
-const hostname = '127.0.0.1';
-const port = 5000;
-
-function Destination(id, destination_ru, destination_en, destination_ch, dateTime, gate, gate_time, status_ru, status_en, status_ch, flights){
-  this.id = id;
-  this.destination_ru = destination_ru;
-  this.destination_en = destination_en;
-  this.destination_ch = destination_ch;
-  this.dateTime = dateTime;
-  this.gate = gate;
-  this.gate_time = gate_time;
-  this.status_ru = status_ru;
-  this.status_en = status_en;
-  this.status_ch = status_ch;
-  this.flights = flights;
-}
-
-const destinationsJson = fs.readFileSync(`${path.join(__dirname, '../data/destinations.json')}`, 'utf-8');
-const statusesJson = fs.readFileSync(`${path.join(__dirname, '../data/statuses.json')}`, 'utf-8');
-const citiesJson = fs.readFileSync(`${path.join(__dirname, '../data/cities.json')}`, 'utf-8');
-const destinationsData = JSON.parse(destinationsJson);
-const statusesData = JSON.parse(statusesJson);
-const citiesData = JSON.parse(citiesJson);
+const http = require('http');
+const url = require('url');
+const moment = require('moment');
+const serverConfig = require('./config');
+const helpers = require('./helpers');
+const service = require('./service');
+const Destination = require('./model');
 
 const state = {
-  destinations: destinationsData.slice(),
+  destinations: [],
   currentDate: Date.getDate
 }
 
-const generateRandomNumber = (max, min) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+const statusesData = service.getStatuses();
+const citiesData = service.getCities();
+
+
+const generateInitialDestinationsList = () => {
+  let destinationsData = service.getAllDestinations();
+  initialDestinations = [];
+
+  destinationsData.forEach(element => {
+    initialDestinations.push(new Destination(element))
+  });
+
+  state.destinations = initialDestinations;
 }
 
-const getDestinationById = id => {
-  return destinationsData.filter(d => d.id == id);
-}
-
-const setDestinationsTime = () => {
+const updateDestinationTime = () => {
   let updatedDestinations = [];
 
   updatedDestinations = state.destinations.map((item, i) => {
-      let t = moment(Date.getDate).add((7 + i)*3, 'm').toDate();
-      item.dateTime = t;
+    let t = moment(Date.getDate).add((7 + i)*3, 'm').toDate();
+    item.setDestinationTime(t)
       
-      return item;
+    return item;
   })
 
   state.destinations = updatedDestinations;
 }
 
-const checkFlightStatus = () => {
+const updateDestinationStatus = () => {
     let minutes = null;
 
-    state.destinations.map((f, i) => {
+    state.destinations.map(f => {
         let destinationTime = moment(f.dateTime);
         let duration = moment.duration(destinationTime.diff(state.currentDate));
         minutes = duration.asMinutes();
         
-        if(minutes < 15 && !(f.status_en == "Canceled")){
-          f.status_ru = statusesData["closed"].status_ru
-          f.status_en = statusesData["closed"].status_en
-          f.status_ch = statusesData["closed"].status_ch
-
-        } else if(minutes < 25 && !(f.status_en == "Canceled")){
-          f.status_ru = statusesData["last_call"].status_ru
-          f.status_en = statusesData["last_call"].status_en
-          f.status_ch = statusesData["last_call"].status_ch
-
-        } else if(minutes < 35 && !(f.status_en == "Canceled")){
-          f.status_ru = statusesData["boarding_now"].status_ru
-          f.status_en = statusesData["boarding_now"].status_en
-          f.status_ch = statusesData["boarding_now"].status_ch
-
-        } else if(minutes < 40 && !(f.status_en == "Canceled")){
-          f.status_ru = statusesData["waiting"].status_ru
-          f.status_en = statusesData["waiting"].status_en
-          f.status_ch = statusesData["waiting"].status_ch
+        if(minutes < 15){
+          f.setDestinationStatus(statusesData["closed"])
+        } else if(minutes > 15 && minutes < 25){
+          f.setDestinationStatus(statusesData["last_call"])
+        } else if(minutes > 25 && minutes < 35){
+          f.setDestinationStatus(statusesData["boarding_now"])
+        } else if(minutes > 35){
+          f.setDestinationStatus(statusesData["waiting"])
         }   
     })
 }
 
-const updateCurrentDateTime = () => {
-  const current = state.currentDate;
-
-  state.currentDate = moment(current).add(1, 'm').toDate();
+const init = () => {
+  generateInitialDestinationsList();
+  updateDestinationTime();
+  updateDestinationStatus();
 }
 
-const createNewRecord = () => {
-  let random = Math.floor(Math.random() * Math.floor(citiesData.length));
-  const city = citiesData[random]
-  let random_ascii = String.fromCharCode(generateRandomNumber(90, 65));
-  let numberOfFlights = generateRandomNumber(3, 1);
+const createNewDestination = () => {
+  let random = helpers.generateRandomNumber(citiesData.length - 1, 0);
+  let numberOfFlights = helpers.generateRandomNumber(3, 1);
+  let random_ascii = helpers.generateRandomASCII();
   let destinationFlights = [];
-  let waitingStatus = statusesData.waiting;
-  let randomId = '_' + Math.random().toString(36).substr(2, 9);
   let newFlightDate = moment(state.currentDate).add(70, 'm').toDate()
 
   for(let i=0; i <= numberOfFlights; i++){
-    let ascii = generateRandomNumber(90, 65)
+    let ascii = helpers.generateRandomNumber(90, 65)
     destinationFlights.push(`${String.fromCharCode(ascii)}${i}${ascii}${i}`)
   }
 
-  let dest = new Destination(randomId, city.destination_ru, city.destination_en, city.destination_ch, newFlightDate, `${random_ascii}${random+1}`,
-                             `${random + 2} min`, waitingStatus.status_ru, waitingStatus.status_en, waitingStatus.status_ch, destinationFlights)
+  let newDestination = {
+    id: helpers.generateRandomId(),
+    destination_ru: citiesData[random].destination_ru,
+    destination_en: citiesData[random].destination_en,
+    destination_ch: citiesData[random].destination_ch,
+    dateTime: newFlightDate,
+    gate: `${random_ascii}${random + 1}`,
+    gate_time: `${random + 2} min`,
+    status: statusesData.waiting,
+    flights: destinationFlights
+  }  
 
- return dest;
+  let dest = new Destination(newDestination)
+
+  return dest;
 }
 
 function setGlobalTimer() {
-  state.destinations.push(createNewRecord());
-  // console.log('ping')
-  setTimeout(setGlobalTimer, 10000);
+  state.currentDate = helpers.updateCurrentDateTime(state.currentDate)
+  updateDestinationStatus();
+  state.destinations.push(createNewDestination());
+  
+  setTimeout(setGlobalTimer, 5000);
 }
 
-function setStatusTimer(){
-    updateCurrentDateTime();
-    checkFlightStatus();
-
-    setTimeout(setStatusTimer, 3000);
-}
-
+init();
 // setGlobalTimer();
-// setStatusTimer()
-setDestinationsTime();
-checkFlightStatus();
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -143,11 +118,11 @@ const server = http.createServer((req, res) => {
     } 
     else if (pathName === '/statuses'){
       res.writeHead(200, { 'Content-Type': 'text/html'});
-      res.end(statusesJson);
+      res.end(JSON.stringify(service.getStatuses()));
     } 
     else if (pathName === '/destination' && id < state.destinations.length){
       res.writeHead(200, { 'Content-Type': 'text/html'});
-      res.end(JSON.stringify(getDestinationById(id)));
+      res.end(JSON.stringify(service.getDestinationById(state.destinations, id)));
     }
     else {
       res.writeHead(404, { 'Content-Type': 'text/html'});
@@ -156,6 +131,6 @@ const server = http.createServer((req, res) => {
     
   });
 
-  server.listen(port, hostname, () => {
-    console.log('Server running at http://'+ hostname + ':' + port + '/');
+  server.listen(serverConfig.PORT, serverConfig.HOSTNAME, () => {
+    console.log('Server running at http://'+ serverConfig.HOSTNAME + ':' + serverConfig.PORT + '/');
   });
