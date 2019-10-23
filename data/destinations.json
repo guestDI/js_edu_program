@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "destination_ru": "Ереван",
+    "destination_en": "Yerevan",
+    "destination_ch": "埃里溫",
+    "dateTime": "",
+    "gate": "D2",
+    "gate_time": "3 min",
+    "status": null,
+    "flights": ["KL2894", "SU1862"]
+  },
+  {
+    "id": 2,
+    "destination_ru": "Любляна",
+    "destination_en": "Ljubljana",
+    "destination_ch": "盧布爾雅那",
+    "dateTime": "",
+    "gate": "D12",
+    "gate_time": "3 min",
+    "status": null,
+    "flights": ["JP915", "SU4160"]
+  },
+  {
+    "id": 3,
+    "destination_ru": "Архангельск",
+    "destination_en": "Arhangelsk",
+    "destination_ch": "阿爾漢格爾斯克",
+    "dateTime": "",
+    "gate": "D11",
+    "gate_time": "2 min",
+    "status": null,
+    "flights": ["KL2859", "SU1330"]
+  },
+  {
+    "id": 4,
+    "destination_ru": "Санкт-Петербург",
+    "destination_en": "St.Petersburg",
+    "destination_ch": "聖彼得堡",
+    "dateTime": "",
+    "gate": "E56",
+    "gate_time": "3 min",
+    "status": null,
+    "flights": ["N4156"]
+  },
+  {
+    "id": 5,
+    "destination_ru": "Саратов",
+    "destination_en": "Saratov",
+    "destination_ch": "薩拉托夫",
+    "dateTime": "",
+    "gate": "D25",
+    "gate_time": "2 min",
+    "status": null,
+    "flights": ["SU1730"]
+  },
+  {
+    "id": 6,
+    "destination_ru": "Прага",
+    "destination_en": "Prague",
+    "destination_ch": "布拉格",
+    "dateTime": "",
+    "gate": "D44",
+    "gate_time": "3 min",
+    "status": null,
+    "flights": ["SU3204", "KL904"]
+  },
+  {
+    "id": 7,
+    "destination_ru": "Самара",
+    "destination_en": "Samara",
+    "destination_ch": "布拉格",
+    "dateTime": "",
+    "gate": "F95",
+    "gate_time": "4 min",
+    "status": null,
+    "flights": ["SU2024"]
+  },
+  {
+    "id": 8,
+    "destination_ru": "Иркутск",
+    "destination_en": "Irkutsk",
+    "destination_ch": "伊爾庫茨克",
+    "dateTime": "",
+    "gate": "E45",
+    "gate_time": "4 min",
+    "status": null,
+    "flights": ["KL2892", "SU1710"]
+  },
+  {
+    "id": 9,
+    "destination_ru": "Сочи",
+    "destination_en": "Sochi",
+    "destination_ch": "索契",
+    "dateTime": "",
+    "gate": "D8",
+    "gate_time": "15 min",
+    "status": null,
+    "flights": ["AF4952", "SU1414"]
+  },
+  {
+    "id": 10,
+    "destination_ru": "Уфа",
+    "destination_en": "Ufa",
+    "destination_ch": "烏法",
+    "dateTime": "",
+    "gate": "D10",
+    "gate_time": "10 min",
+    "status": null,
+    "flights": ["N4195"]
+  },
+  {
+    "id": 11,
+    "destination_ru": "Париж",
+    "destination_en": "Paris",
+    "destination_ch": "巴黎",
+    "dateTime": "",
+    "gate": "E42",
+    "gate_time": "12 min",
+    "status": null,
+    "flights": ["AZ7163", "SU2404", "AF1745"]
+  }
+]

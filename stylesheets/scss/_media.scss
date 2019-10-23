@@ -8,3 +8,7 @@ $mediaMinWidth: 318px;
 @mixin for-small-phone-screens {
   @media only screen and (min-width: $mediaMinWidth) and (max-width: 420px) { @content; }
 }
+
+@mixin for-small-tablets {
+  @media only screen and (min-width: 661px) and (max-width: 1024px) { @content; }
+}

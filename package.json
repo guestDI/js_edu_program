@@ -1,0 +1,45 @@
+{
+  "name": "js_edu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack --watch",
+    "start:dev": "webpack-dev-server --mode development --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guestDI/js_edu_program.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guestDI/js_edu_program/issues"
+  },
+  "homepage": "https://github.com/guestDI/js_edu_program#readme",
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/runtime": "7.0.0-beta.55",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/register": "^7.6.2",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^3.2.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-webpack-plugin": "^4.0.0-beta.8",
+    "node-sass": "^4.12.0",
+    "raw-loader": "^3.1.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "moment": "^2.24.0"
+  }
+}

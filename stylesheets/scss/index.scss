@@ -1,0 +1,344 @@
+@import '_square';
+@import '_media';
+
+$primary-bg-color: #000;
+$secondary-bg-color: #19212b;
+$primary-font-color: #fff;
+$secondary-font-color: #b8b8b8;
+$flight-font-color: #d17d06;
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+    background-color: #484a49;
+}
+
+.sub-city {
+  width: 40%;
+
+  @include for-small-tablets {
+    padding-left: 10px;
+  }
+  // overflow: hidden;
+}
+
+.sub-text_color {
+  color: $secondary-font-color;
+}
+
+.sub-text_size {
+  font-size: 0.85em;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+body {
+  background-color: $primary-bg-color;
+  color: $primary-font-color;
+  max-width: 1200px;
+  margin: auto;
+  letter-spacing: 0.05em;
+  font-family: 'Montserrat', sans-serif;
+
+  ul.schedule-section {
+    display: block;
+    border-radius: 3px;
+    margin: 0 5px 5px;
+    background-color: $secondary-bg-color;
+    list-style-type: none;
+    padding-left: 0%;
+
+    & > div {
+      padding-left: 63px;
+      padding-top: 3px;
+
+      .time-next {
+        color: #d17d06;
+      }
+    }
+  }
+}
+
+.destination-block-wrapper {
+  border-bottom: 1px solid #0e131a;
+  padding: 5px 10px;
+  height: 50px;
+  font-weight: 600;
+
+  @include for-phone-screens {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: auto;
+    padding: 5px 10px;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .destination-block {
+    display: inline-block;
+    vertical-align: top;
+    
+    @include for-phone-screens {
+      display: flex;
+      padding: 0 10px;
+    }
+  }
+
+  .time {
+    padding: 0 5px 0 2px;
+    width: 50px;
+  }
+
+  .status {
+    width: 25%;
+    margin: 0;
+    font-size: 12px;
+    height: -webkit-fill-available;
+    padding: 1px 2px;
+
+    @include for-phone-screens {
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+    }
+
+    &_cancelled {
+      background-color: #730000;
+    }
+  }
+
+  .flights-destination {
+    // width: 30%;
+
+    @include for-small-phone-screens{
+      flex-direction: column;
+      width: 40%;
+      padding-left: 0;
+    }
+
+    @include for-small-tablets {
+      width: 39%;
+    }
+
+    .city {
+      width: 40%;
+
+      @include for-phone-screens {
+        flex-direction: column;
+        width: 78%;
+      }
+    }
+
+    .flights {
+      font-size: 10px;
+      padding: 4px 0;
+      color: $flight-font-color;
+
+      span {
+        padding: 3px 2px;
+      }
+
+      @include for-phone-screens {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  .gate-block-wrapper {
+    width: 25%;
+    height: 100%;
+
+    @include for-phone-screens {
+      flex-direction: row;
+      width: 42%;
+      height: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @include for-small-tablets {
+      width: 26%;
+    }
+
+    .gate-block {
+      display: inline-block;
+      width: 45%;
+      background-color: #0e131a;
+      height: 100%;
+
+      @include for-phone-screens {
+        display: flex;
+        align-items: center;
+        margin: 3px;
+      }
+
+      span {
+        font-size: 14px;
+        padding: 2px 0 0 3px;
+      }
+    }
+
+    .step {
+      vertical-align: top;
+      width: 18px;
+      padding: 3px;
+
+      &_closed {
+        filter: invert(.7) sepia(1) saturate(7) hue-rotate(5deg);
+      }
+    }
+  }
+}
+
+header {
+  display: block;
+  position: relative;
+  width: 100%;
+
+  @include for-phone-screens {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-title {
+    display: block;
+    padding: 20px 90px 10px;
+    font-weight: bold;
+
+    @include for-phone-screens {
+      padding: 10px 20px 10px 20px;
+    }
+
+    h1 span {
+      display: block;
+    }
+  }
+
+  .bottom-block {
+    padding: 110px 0 10px 60px;
+
+    @include for-phone-screens {
+      display: flex;
+      flex-direction: row;
+      padding: 0;
+    }
+
+    .terminal-wrapper {
+      display: inline-block;
+      padding-left: 20px;
+      vertical-align: middle;
+
+      .terminal {
+        margin-top: 5px;
+      }
+
+      span {
+        font-weight: bold;
+      }
+
+      @include for-phone-screens {
+        display: flex;
+        flex-direction: column;
+        width: -webkit-fill-available;
+        width: fill-available;
+        justify-content: flex-end;
+        padding-bottom: 15px;
+      }
+    }
+
+    .current-date-block {
+      display: inline-block;
+      padding: 10px 0 15px;
+      vertical-align: middle;
+      width: 30%;
+
+      @include for-phone-screens {
+        padding: 10px 27px 10px;
+        width: auto;
+      }
+
+      .time-block{
+        display: inline-block;
+
+        img.clock-icon {
+          width: 24px;
+        }
+      }
+
+      .time, .date {
+        vertical-align: top;
+        font-size: 19px;
+        font-weight: bold;
+      }
+
+      .time {
+        padding-right: 13px;
+      }
+    }
+  }
+
+  img.plane-icon {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    width: 75px;
+
+    @include for-small-phone-screens {
+      top: 15px;
+      right: 15px;
+      width: 60px;
+    }
+  }
+}
+
+// show/hide effect
+.hide {
+  height: 0;
+  padding: 0 10px;
+  border: none;
+  overflow: hidden;
+  transition: height 600ms linear, padding 1s;
+}
+
+.show{
+  border-bottom: 1px solid #0e131a;
+  padding: 5px;
+  height: 50px;
+  overflow: visible;
+  transition: height 600ms linear, padding 1s;
+
+  @include for-small-phone-screens {
+    height: 120px;
+  }
+
+  @include for-phone-screens {
+    height: 125px;
+  }
+}
+
+// show/hide effect end
+
+footer {
+  display: block;
+  background-color: $secondary-bg-color;
+  border-radius: 3px;
+  margin: 0 5px;
+}
