@@ -18,6 +18,10 @@ html {
 
 .sub-city {
   width: 40%;
+
+  @include for-small-tablets {
+    padding-left: 10px;
+  }
   // overflow: hidden;
 }
 
@@ -79,7 +83,7 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     height: auto;
-    padding: 5px;
+    padding: 5px 10px;
   }
 
   &:last-child {
@@ -89,9 +93,10 @@ body {
   .destination-block {
     display: inline-block;
     vertical-align: top;
-
+    
     @include for-phone-screens {
       display: flex;
+      padding: 0 10px;
     }
   }
 
@@ -119,15 +124,25 @@ body {
   }
 
   .flights-destination {
-    width: 30%;
+    // width: 30%;
 
-    @include for-phone-screens {
+    @include for-small-phone-screens{
       flex-direction: column;
-      width: 38%;
+      width: 40%;
+      padding-left: 0;
+    }
+
+    @include for-small-tablets {
+      width: 39%;
     }
 
     .city {
       width: 40%;
+
+      @include for-phone-screens {
+        flex-direction: column;
+        width: 78%;
+      }
     }
 
     .flights {
@@ -153,8 +168,14 @@ body {
 
     @include for-phone-screens {
       flex-direction: row;
-      width: 45%;
+      width: 42%;
       height: auto;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @include for-small-tablets {
+      width: 26%;
     }
 
     .gate-block {
@@ -299,10 +320,18 @@ header {
 
 .show{
   border-bottom: 1px solid #0e131a;
-  padding: 5px 10px;
+  padding: 5px;
   height: 50px;
   overflow: visible;
   transition: height 600ms linear, padding 1s;
+
+  @include for-small-phone-screens {
+    height: 120px;
+  }
+
+  @include for-phone-screens {
+    height: 125px;
+  }
 }
 
 // show/hide effect end

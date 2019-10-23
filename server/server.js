@@ -76,23 +76,6 @@ const makeDestinationCanceled = () => {
   state.destinations.splice(indexOfDestination, 1, changedDestination) 
 }
 
-const makeDestinationScheduled = () => {
-  let edited = state.destinations.slice();
-  let canceledDestinations = state.destinations.filter(d => d.status['status_en'] == 'Canceled')
-  let changedDestination = null;
-  let indexOfDestination = null;
-
-  if(canceledDestinations.length > 0){
-    changedDestination = canceledDestinations[0]
-    changedDestination.status = statusesData["waiting"]
-  }
-
-  indexOfDestination = edited.findIndex(d => d.id === changedDestination.id);
-  edited.push(edited.splice(indexOfDestination, 1)[0]);
-  
-  state.destinations = edited;
-}
-
 const init = () => {
   generateInitialDestinationsList();
   updateDestinationTime();
@@ -139,12 +122,12 @@ function setGlobalTimer() {
 function setTimerToMakeDestinationCanceled(){
   makeDestinationCanceled();
 
-  setTimeout(setTimerToMakeDestinationCanceled, 13000);
+  setTimeout(setTimerToMakeDestinationCanceled, 14000);
 }
 
 init();
 // setGlobalTimer();
-// setTimerToMakeDestinationScheduled();
+// setTimerToMakeDestinationCanceled();
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

@@ -42,8 +42,16 @@ html {
   background-color: #484a49;
 }
 
+.sub-city {
+  width: 40%;
+}
+
 .sub-text_color {
   color: #b8b8b8;
+}
+
+.sub-text_size {
+  font-size: 0.85em;
 }
 
 .right {
@@ -66,17 +74,19 @@ body {
   letter-spacing: 0.05em;
   font-family: "Montserrat", sans-serif;
 }
-body section.schedule-section {
+body ul.schedule-section {
   display: block;
   border-radius: 3px;
   margin: 0 5px 5px;
   background-color: #19212b;
+  list-style-type: none;
+  padding-left: 0%;
 }
-body section.schedule-section header {
+body ul.schedule-section > div {
   padding-left: 63px;
   padding-top: 3px;
 }
-body section.schedule-section header .time-next {
+body ul.schedule-section > div .time-next {
   color: #d17d06;
 }
 
@@ -92,7 +102,7 @@ body section.schedule-section header .time-next {
     flex-direction: row;
     flex-wrap: wrap;
     height: auto;
-    padding: 5px;
+    padding: 5px 10px;
   }
 }
 .destination-block-wrapper:last-child {
@@ -105,6 +115,7 @@ body section.schedule-section header .time-next {
 @media only screen and (min-width: 318px) and (max-width: 660px) {
   .destination-block-wrapper .destination-block {
     display: flex;
+    padding: 0 10px;
   }
 }
 .destination-block-wrapper .time {
@@ -115,24 +126,38 @@ body section.schedule-section header .time-next {
   width: 25%;
   margin: 0;
   font-size: 12px;
+  height: -webkit-fill-available;
+  padding: 1px 2px;
 }
 @media only screen and (min-width: 318px) and (max-width: 660px) {
   .destination-block-wrapper .status {
     flex-direction: column;
     width: 100%;
+    height: auto;
   }
 }
-.destination-block-wrapper .flights-destination {
-  width: 30%;
+.destination-block-wrapper .status_cancelled {
+  background-color: #730000;
 }
-@media only screen and (min-width: 318px) and (max-width: 660px) {
+@media only screen and (min-width: 318px) and (max-width: 420px) {
   .destination-block-wrapper .flights-destination {
     flex-direction: column;
-    width: 38%;
+    width: 40%;
+  }
+}
+@media only screen and (min-width: 661px) and (max-width: 901px) {
+  .destination-block-wrapper .flights-destination {
+    width: 36%;
   }
 }
 .destination-block-wrapper .flights-destination .city {
   width: 40%;
+}
+@media only screen and (min-width: 318px) and (max-width: 660px) {
+  .destination-block-wrapper .flights-destination .city {
+    flex-direction: column;
+    width: 78%;
+  }
 }
 .destination-block-wrapper .flights-destination .flights {
   font-size: 10px;
@@ -156,7 +181,7 @@ body section.schedule-section header .time-next {
 @media only screen and (min-width: 318px) and (max-width: 660px) {
   .destination-block-wrapper .gate-block-wrapper {
     flex-direction: row;
-    width: 45%;
+    width: 47%;
     height: auto;
   }
 }
@@ -181,6 +206,9 @@ body section.schedule-section header .time-next {
   vertical-align: top;
   width: 18px;
   padding: 3px;
+}
+.destination-block-wrapper .gate-block-wrapper .step_closed {
+  filter: invert(0.7) sepia(1) saturate(7) hue-rotate(5deg);
 }
 
 header {
@@ -275,6 +303,32 @@ header img.plane-icon {
     top: 15px;
     right: 15px;
     width: 60px;
+  }
+}
+
+.hide {
+  height: 0;
+  padding: 0 10px;
+  border: none;
+  overflow: hidden;
+  transition: height 600ms linear, padding 1s;
+}
+
+.show {
+  border-bottom: 1px solid #0e131a;
+  padding: 5px;
+  height: 50px;
+  overflow: visible;
+  transition: height 600ms linear, padding 1s;
+}
+@media only screen and (min-width: 318px) and (max-width: 420px) {
+  .show {
+    height: 120px;
+  }
+}
+@media only screen and (min-width: 318px) and (max-width: 660px) {
+  .show {
+    height: 125px;
   }
 }
 
