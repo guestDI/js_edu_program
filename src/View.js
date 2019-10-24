@@ -11,10 +11,11 @@ const UIController = (function(){
         subCityLanguageSelector: '.sub-city',
         subCityLanguageSelectorContainer: '.flip',
         statusSelector: '.status',
-        primaryStatusSelector: '.status > .primary_status > span',
+        primaryStatusSelector: '.primary_status',
         secondaryStatusSelector: '.status > .sub-text_color > span'
     };
 
+    const closedDestinationRecords = [];
     const destinationRecords = [];     
 
     const printFilghts = flights => {
@@ -44,6 +45,14 @@ const UIController = (function(){
                 return element.getAttribute('id');
             },
 
+            getElementStatus: function(){
+                return element.querySelector(DOMStrings.primaryStatusSelector).innerHTML;
+            },
+
+            getElementTime: function(){
+                return destination.dateTime;
+            },
+
             changeFlightStatus: function(status){
                 element.querySelector(DOMStrings.secondaryLanguageSelector).innerHTML = status;
             },
@@ -54,7 +63,8 @@ const UIController = (function(){
             },
 
             printClosedToTheDom: function(){
-                document.querySelector(DOMStrings.closedFlightsSelector).appendChild(element);
+                let closedSection = document.querySelector(DOMStrings.closedFlightsSelector);
+                closedSection.insertBefore(element, closedSection.childNodes[0]);
                 setTimeout(() => element.classList.add('show'), 500)
             },
 
@@ -96,7 +106,8 @@ const UIController = (function(){
             },
 
             collapseDestinationRecord: function(){
-                setTimeout(() => element.classList.toggle('hide'), 0);
+                setTimeout(() => element.classList.remove('show'), 0);
+                setTimeout(() => element.classList.add('hide'), 0);
                 // element.remove();
             },
         };
@@ -150,6 +161,10 @@ const UIController = (function(){
 
         returnDestinationRecords: function(){
             return destinationRecords;
+        },
+
+        returnClosedDestinationRecords: function(){
+            return destinationRecords.filter(d => d.getElementStatus() == 'Посадка завершена')
         },
 
         createDestination: function(destination){

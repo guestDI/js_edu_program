@@ -101,6 +101,14 @@ const presenter = (function(flightModel, flightView){
         }
     }
 
+    const sortClosedDestinations = data => {
+        data.sort((a, b) => {
+            return new Date('1970/01/01 ' + b.getElementTime()) - new Date('1970/01/01 ' + a.getElementTime());
+        }) 
+
+        return data;
+    }
+
     const setGlobalTimer = () => {
         flightModel.getDestinations()
             .then(r => {
@@ -114,9 +122,18 @@ const presenter = (function(flightModel, flightView){
                 } 
                 
                 if (changedDestinations.length > 0){
+                    let closed = flightView.returnClosedDestinationRecords();
                     changeStatus(changedDestinations)
                     moveRecordToClosed(changedDestinations)                    
 
+                    if(sortClosedDestinations(closed).length >= 5){
+                        sortClosedDestinations(closed).length = 5;
+
+                        let el = sortClosedDestinations(closed)[4]
+                        el.collapseDestinationRecord()
+                        
+                    }
+                    
                     state.destinations = r.slice();
                 }    
                 
@@ -156,7 +173,9 @@ const presenter = (function(flightModel, flightView){
         destinations.forEach(d => {
             let id = d.getElementId();
             let obj = state.destinations.find(obj => obj.id == id);
-            d.changeDestinationLanguage(obj[lng.destination_lng]);
+            if(obj[lng.destination_lng]){
+                d.changeDestinationLanguage(obj[lng.destination_lng]);
+            }
             d.changeStatusLanguage(obj.status[lng.status_lng])
         })
 
