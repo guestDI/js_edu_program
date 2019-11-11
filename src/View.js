@@ -118,11 +118,9 @@ const UIController = (function(){
                     <time>${dateTime}</time>
                 </div>
                 <div class="destination-block flights-destination">
-                    <div class="left city">
-                    <span>${destination_ru}</span>
-                    </div>
-                    <div class="flip">
-                        <span class="sub-text_color sub-city sub-text_size" >${destination_en}</span>
+                    <div>
+                        <span class="city">${destination_ru}</span>
+                        <span class="sub-text_color sub-city sub-text_size flip" >${destination_en}</span>
                     </div>
                     <div class="flights">
                         ${printFilghts(flights)}
@@ -133,7 +131,7 @@ const UIController = (function(){
                         <img class="step" src="images/steps.png" />
                         <span>${gate_time}</span>
                     </div>
-                        <div class="gate-block">
+                    <div class="gate-block">
                         <span>${gate}</span>
                     </div>
                 </div>

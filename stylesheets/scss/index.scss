@@ -17,7 +17,9 @@ html {
 }
 
 .sub-city {
-  width: 40%;
+  display: inline-block; 
+  width: calc(50% - 2px);
+  vertical-align: top;
 
   @include for-small-tablets {
     padding-left: 10px;
@@ -30,15 +32,7 @@ html {
 }
 
 .sub-text_size {
-  font-size: 0.85em;
-}
-
-.right {
-  float: right;
-}
-
-.left {
-  float: left;
+  font-size: 14px;
 }
 
 .bold-text {
@@ -75,8 +69,10 @@ body {
 .destination-block-wrapper {
   border-bottom: 1px solid #0e131a;
   padding: 5px 10px;
-  height: 50px;
   font-weight: 600;
+  box-sizing: border-box;
+  font-size: 0;
+  min-height: 50px;
 
   @include for-phone-screens {
     display: flex;
@@ -101,12 +97,13 @@ body {
   }
 
   .time {
-    padding: 0 5px 0 2px;
+    padding: 0 3px 0 2px;
     width: 50px;
+    font-size: 14px;
   }
 
   .status {
-    width: 25%;
+    width: calc(100% / 3 - 50px);
     margin: 0;
     font-size: 12px;
     height: -webkit-fill-available;
@@ -124,7 +121,8 @@ body {
   }
 
   .flights-destination {
-    // width: 30%;
+    width: calc(100% / 3 - 2px);
+    font-size: 0;
 
     @include for-small-phone-screens{
       flex-direction: column;
@@ -137,7 +135,9 @@ body {
     }
 
     .city {
-      width: 40%;
+      display: inline-block; 
+      font-size: 16px;
+      width: calc(50% - 2px);
 
       @include for-phone-screens {
         flex-direction: column;
@@ -163,7 +163,7 @@ body {
   }
 
   .gate-block-wrapper {
-    width: 25%;
+    width: calc(100% / 3 - 2px);
     height: 100%;
 
     @include for-phone-screens {
@@ -180,25 +180,22 @@ body {
 
     .gate-block {
       display: inline-block;
-      width: 45%;
+      width: 47%;
+      min-height: 50px;
       background-color: #0e131a;
-      height: 100%;
+      padding: 5px 0 0 5px;
+      font-size: 15px;
 
       @include for-phone-screens {
         display: flex;
         align-items: center;
         margin: 3px;
       }
-
-      span {
-        font-size: 14px;
-        padding: 2px 0 0 3px;
-      }
     }
 
     .step {
       vertical-align: top;
-      width: 18px;
+      width: 16px;
       padding: 3px;
 
       &_closed {
@@ -209,7 +206,6 @@ body {
 }
 
 header {
-  display: block;
   position: relative;
   width: 100%;
 
@@ -219,11 +215,13 @@ header {
   }
 
   .header-title {
-    display: block;
-    padding: 20px 90px 10px;
+    display: inline-block;
+    width: 49%;
+    padding: 1.1em 3em;
     font-weight: bold;
 
     @include for-phone-screens {
+      width: 47%;
       padding: 10px 20px 10px 20px;
     }
 
@@ -233,7 +231,8 @@ header {
   }
 
   .bottom-block {
-    padding: 110px 0 10px 60px;
+    // padding: 110px 0 10px 60px;
+    padding: 1.1em 3em;
 
     @include for-phone-screens {
       display: flex;
@@ -266,7 +265,6 @@ header {
 
     .current-date-block {
       display: inline-block;
-      padding: 10px 0 15px;
       vertical-align: middle;
       width: 30%;
 
@@ -295,18 +293,20 @@ header {
     }
   }
 
-  img.plane-icon {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    width: 75px;
+  .plane-icon {
+    display: inline-block;
+    width: 50%;
+    text-align: end;
+    padding: 1.1em 2.1em;
+
+    img {
+      width: 75px;
+    }
 
     @include for-small-phone-screens {
-      top: 15px;
-      right: 15px;
-      width: 60px;
+      padding: 0.5em;
     }
-  }
+  }   
 }
 
 // show/hide effect
@@ -337,7 +337,6 @@ header {
 // show/hide effect end
 
 footer {
-  display: block;
   background-color: $secondary-bg-color;
   border-radius: 3px;
   margin: 0 5px;
