@@ -5,6 +5,7 @@ const serverConfig = require('./config');
 const helpers = require('./helpers');
 const service = require('./service');
 const Destination = require('./model');
+// const globalState = require('./state');
 
 const state = {
   destinations: [],
@@ -13,7 +14,6 @@ const state = {
 
 const statusesData = service.getStatuses();
 const citiesData = service.getCities();
-
 
 const generateInitialDestinationsList = () => {
   let destinationsData = service.getAllDestinations();
@@ -24,6 +24,7 @@ const generateInitialDestinationsList = () => {
   });
 
   state.destinations = initialDestinations;
+  // globalState.setDestinations(initialDestinations);
 }
 
 const updateDestinationTime = () => {
@@ -106,9 +107,7 @@ const createNewDestination = () => {
     flights: destinationFlights
   }  
 
-  let dest = new Destination(newDestination)
-
-  return dest;
+  return new Destination(newDestination);
 }
 
 function setGlobalTimer() {
