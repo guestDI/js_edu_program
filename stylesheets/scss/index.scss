@@ -13,17 +13,18 @@ $flight-font-color: #d17d06;
 }
 
 html {
-    background-color: #484a49;
+  background-color: #484a49;
 }
 
 .sub-city {
-  display: inline-block; 
+  display: inline-block;
   width: calc(50% - 2px);
   vertical-align: top;
 
   @include for-small-tablets {
     padding-left: 10px;
   }
+
   // overflow: hidden;
 }
 
@@ -55,7 +56,7 @@ body {
     list-style-type: none;
     padding-left: 0%;
 
-    & > div {
+    &>div {
       padding-left: 63px;
       padding-top: 3px;
 
@@ -63,6 +64,12 @@ body {
         color: #d17d06;
       }
     }
+  }
+
+  .no-data {
+    border: 1px solid $secondary-bg-color;
+    text-align: center;
+    padding: 10px 0;
   }
 }
 
@@ -89,7 +96,7 @@ body {
   .destination-block {
     display: inline-block;
     vertical-align: top;
-    
+
     @include for-phone-screens {
       display: flex;
       padding: 0 10px;
@@ -124,7 +131,7 @@ body {
     width: calc(100% / 3 - 2px);
     font-size: 0;
 
-    @include for-small-phone-screens{
+    @include for-small-phone-screens {
       flex-direction: column;
       width: 40%;
       padding-left: 0;
@@ -135,7 +142,7 @@ body {
     }
 
     .city {
-      display: inline-block; 
+      display: inline-block;
       font-size: 16px;
       width: calc(50% - 2px);
 
@@ -274,7 +281,7 @@ header {
         width: auto;
       }
 
-      .time-block{
+      .time-block {
         display: inline-block;
 
         img.clock-icon {
@@ -282,7 +289,8 @@ header {
         }
       }
 
-      .time, .date {
+      .time,
+      .date {
         vertical-align: top;
         font-size: 19px;
         font-weight: bold;
@@ -307,7 +315,7 @@ header {
     @include for-small-phone-screens {
       padding: 0.5em;
     }
-  }   
+  }
 }
 
 // show/hide effect

@@ -1,5 +1,9 @@
 const path = require('path');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -11,7 +15,7 @@ module.exports = {
   devServer: {
     port: 3005,
     inline: true,
-    host: "localhost",
+    host: 'localhost',
     contentBase: './',
     hot: true,
     watchOptions: {
@@ -20,28 +24,28 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.scss$/,
         exclude: /node-module/,
         use: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.html$/,
-        use: ["raw-loader"]
+        use: ['raw-loader']
       },
       {
         test: /\.js$/,
         exclude: /node-module/,
-        use: ["babel-loader"]
+        use: ['babel-loader']
       }
     ]
   },
   plugins: [
     // new ExtractTextPlugin('style.css'),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-            template: "./index.html",
-            inject: false
-        })
+      template: './index.html',
+      inject: false
+    })
   ]
 };
