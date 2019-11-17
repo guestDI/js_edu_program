@@ -9,6 +9,7 @@ const presenter = (function (flightModel, flightView) {
         changedFlights: [],
         current_secondary_lng: 'en',
         timeOut: null,
+        currentLngIndex: 0
     };
 
     const formattedDateTime = function (format) {
@@ -53,7 +54,7 @@ const presenter = (function (flightModel, flightView) {
     };
 
     const changeStatus = changedDestinations => {
-        let destinations = flightView.returnDestinationRecords();
+        let destinations = flightView.returnDestinations();
 
         destinations.forEach(d => {
             let id = d.getElementId();
@@ -73,7 +74,7 @@ const presenter = (function (flightModel, flightView) {
     };
 
     const closeDestination = changedDestinations => {
-        let destinations = flightView.returnDestinationRecords();
+        let destinations = flightView.returnDestinations();
         let el = null;
 
         changedDestinations.forEach(d => {
@@ -105,7 +106,7 @@ const presenter = (function (flightModel, flightView) {
         }
     };
 
-    const displayNewDestination = data => {
+    const addNewDestination = data => {
         if (data.length) {
             data.forEach(d => {
                 let destination = flightView.createDestination(d);
@@ -114,7 +115,7 @@ const presenter = (function (flightModel, flightView) {
                     state.current_secondary_lng === 'en' ?
                     'status_en' :
                     'status_ch';
-                destination.printNewDestination(d.status[secondaryLng]);
+                destination.displayNewDestination(d.status[secondaryLng]);
                 if (d.status['status_en'] == 'Canceled') {
                     destination.styleCanceledDeparture();
                 }
@@ -136,13 +137,13 @@ const presenter = (function (flightModel, flightView) {
             let changedDestinations = isStatusChanged(r, state.destinations);
 
             if (newDestinations.length > 0) {
-                displayNewDestination(formatDepartureTime(newDestinations));
+                addNewDestination(formatDepartureTime(newDestinations));
 
                 state.destinations = r.slice();
             }
 
             if (changedDestinations.length > 0) {
-                let closed = flightView.returnClosedDestinationRecords();
+                let closed = flightView.returnClosedDestinations();
                 changeStatus(changedDestinations);
                 closeDestination(changedDestinations);
 
@@ -185,7 +186,7 @@ const presenter = (function (flightModel, flightView) {
 
     const setLangTimeout = () => {
         let lng = changeSecondaryLanguage();
-        let destinations = flightView.returnDestinationRecords();
+        let destinations = flightView.returnDestinations();
 
         destinations.forEach(d => {
             let id = d.getElementId();
@@ -201,7 +202,7 @@ const presenter = (function (flightModel, flightView) {
 
     return {
         init: function () {
-            console.log('Application has started'); //TODO: dev and prod mode to display this only on dev
+            process.env.NODE_ENV == 'production' || console.log('Application has started');
             flightModel.getDestinations()
                 .then(r => {
                     let resultState = r.slice();

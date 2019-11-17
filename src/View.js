@@ -74,7 +74,7 @@ const UIController = (function () {
 				setTimeout(() => element.classList.add('show'), 500);
 			},
 
-			printNewDestination: function (status) {
+			displayNewDestination: function (status) {
 				let section =
 					status == 'Gate Closed' ?
 					DOMStrings.closedDestinationsSelector :
@@ -200,11 +200,11 @@ const UIController = (function () {
 			dateElement.innerHTML = time;
 		},
 
-		returnDestinationRecords: function () {
+		returnDestinations: function () {
 			return destinationRecords;
 		},
 
-		returnClosedDestinationRecords: function () {
+		returnClosedDestinations: function () {
 			return destinationRecords.filter(
 				d => d.getElementStatus() == 'Посадка завершена'
 			);
