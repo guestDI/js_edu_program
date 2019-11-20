@@ -1,3 +1,7 @@
+import {
+	statuses
+} from './constants';
+
 const UIController = (function () {
 	const DOMStrings = {
 		mainSelector: 'main',
@@ -10,7 +14,6 @@ const UIController = (function () {
 		openDestinationsSelector: '.schedule-section_open',
 		flightsSelector: '.flights',
 		subCityLanguageSelector: '.sub-city',
-		subCityLanguageSelectorContainer: '.flip',
 		statusSelector: '.status',
 		primaryStatusSelector: '.primary_status',
 		secondaryStatusSelector: '.status > .sub-text_color > span'
@@ -19,11 +22,11 @@ const UIController = (function () {
 	const destinationRecords = [];
 
 	const displayFilghts = flights => {
-		const flightsList = [];
+		let flightsList = [];
 
 		if (flights) {
-			flights.map(item => {
-				flightsList.push(`<span>${item}</span>`);
+			flightsList = flights.map(item => {
+				return `<span>${item}</span>`;
 			});
 		}
 
@@ -42,7 +45,7 @@ const UIController = (function () {
 
 		return {
 			getElementId: function () {
-				return element.getAttribute('id');
+				return destination.id;
 			},
 
 			getElementStatus: function () {
@@ -54,12 +57,8 @@ const UIController = (function () {
 				return destination.dateTime;
 			},
 
-			changeStatus: function (status) {
-				element.querySelector(DOMStrings.secondaryLanguageSelector).innerHTML = status;
-			},
-
 			displayDestination: function (status) {
-				let section = status == 'Gate Closed' ? DOMStrings.closedDestinationsSelector : DOMStrings.openDestinationsSelector;
+				let section = status == statuses.CLOSED.EN ? DOMStrings.closedDestinationsSelector : DOMStrings.openDestinationsSelector;
 				document.querySelector(section).appendChild(element);
 			},
 
@@ -71,36 +70,26 @@ const UIController = (function () {
 					element,
 					closedSection.childNodes[0]
 				);
-				setTimeout(() => element.classList.add('show'), 500);
+				element.classList.add('show');
+				// setTimeout(() => element.classList.add('show'), 500);
 			},
 
 			displayNewDestination: function (status) {
 				let section =
-					status == 'Gate Closed' ?
+					status == statuses.CLOSED.EN ?
 					DOMStrings.closedDestinationsSelector :
 					DOMStrings.openDestinationsSelector;
-				element.classList.add('hide');
+				// element.classList.add('hide');
 				document.querySelector(section).appendChild(element);
-				setTimeout(() => element.classList.add('show'), 0);
+				// setTimeout(() => element.classList.add('show'), 0);
 			},
 
 			styleDeparuredFlight: function () {
-				element
-					.querySelector(DOMStrings.gateImageSelector)
-					.classList.add('step_closed');
-				element.querySelector(DOMStrings.gateSelector).style.color =
-					'#d17d06';
+				element.classList.add('closed');
 			},
 
 			styleCanceledDeparture: function () {
-				element
-					.querySelector(DOMStrings.statusSelector)
-					.classList.add('status_cancelled');
-				element
-					.querySelector(DOMStrings.statusSelector)
-					.getElementsByTagName('span')[1].style.color = '#ff3333';
-				element.getElementsByTagName('time')[0].style.visibility =
-					'hidden';
+				element.classList.add('canceled');
 			},
 
 			styleScheduledDestination: function () {
@@ -114,18 +103,16 @@ const UIController = (function () {
 					'visible';
 			},
 
-			//TODO: remove innerHTML and use css classes
 			changeDestinationLanguage: function (destination) {
 				element.querySelector(
 					DOMStrings.subCityLanguageSelector
-				).innerHTML = destination;
+				).setAttribute('data-content', destination);
 			},
 
-			//TODO: remove innerHTML and use css classes
 			changeStatusLanguage: function (status) {
 				element.querySelector(
 					DOMStrings.secondaryStatusSelector
-				).innerHTML = status;
+				).setAttribute('data-content', status);
 			},
 
 			changeStatus: function (status_ru, secondaryStatus) {
@@ -134,13 +121,23 @@ const UIController = (function () {
 				).innerHTML = status_ru;
 				element.querySelector(
 					DOMStrings.secondaryStatusSelector
-				).innerHTML = secondaryStatus;
+				).setAttribute('data-content', secondaryStatus);
 			},
 
-			collapseDestinationRecord: function () {
-				setTimeout(() => element.classList.remove('show'), 0);
-				setTimeout(() => element.classList.add('hide'), 0);
-				// element.remove();
+			collapseDestination: function () {
+				element.classList.add('hide');
+			},
+
+			expandDestination: function () {
+				let closedSection = document.querySelector(
+					DOMStrings.closedDestinationsSelector
+				);
+				closedSection.insertBefore(
+					element,
+					closedSection.childNodes[0]
+				);
+				element.classList.remove('hide');
+				element.classList.add('show');
 			}
 		};
 	}
@@ -160,7 +157,7 @@ const UIController = (function () {
                 <div class="destination-block flights-destination">
                     <div>
                         <span class="city">${destination_ru}</span>
-                        <span class="sub-text_color sub-city sub-text_size flip" >${destination_en}</span>
+                        <span class="sub-text_color sub-city sub-text_size" data-content="${destination_en}"></span>
                     </div>
                     <div class="flights">
                         ${displayFilghts(flights)}
@@ -180,7 +177,7 @@ const UIController = (function () {
                         <span>${status.status_ru}</span>
                     </div>
                     <div class="sub-text_color sub_status">
-                        <span>${status.status_en}</span>
+                        <span data-content="${status.status_en}"></span>
                     </div>
                 </div>`;
 	}

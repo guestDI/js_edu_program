@@ -28,6 +28,10 @@ html {
   // overflow: hidden;
 }
 
+.sub-city::before {
+  content: attr(data-content);
+}
+
 .sub-text_color {
   color: $secondary-font-color;
 }
@@ -112,6 +116,7 @@ body {
   .status {
     width: calc(100% / 3 - 50px);
     margin: 0;
+    min-height: 45px;
     font-size: 12px;
     height: -webkit-fill-available;
     padding: 1px 2px;
@@ -122,9 +127,19 @@ body {
       height: auto;
     }
 
-    &_cancelled {
-      background-color: #730000;
-    }
+    // &_cancelled {
+    //   background-color: #730000;
+    // }
+
+    // &_cancelled{
+    //   img{
+
+    //   }
+    // }
+  }
+
+  .sub_status span::before {
+    content: attr(data-content);
   }
 
   .flights-destination {
@@ -205,13 +220,34 @@ body {
       vertical-align: top;
       width: 16px;
       padding: 3px;
-
-      &_closed {
-        filter: invert(.7) sepia(1) saturate(7) hue-rotate(5deg);
-      }
     }
   }
 }
+
+.closed {
+  .gate-block-wrapper {
+    color: #d17d06;
+
+    .step {
+      filter: invert(.7) sepia(1) saturate(7) hue-rotate(5deg);
+    }
+  }
+}
+
+.canceled {
+  .status {
+    .sub_status {
+      color: #ff3333;
+    }
+
+    background-color: #730000;
+  }
+
+  .time {
+    visibility: hidden;
+  }
+}
+
 
 header {
   position: relative;
@@ -321,18 +357,22 @@ header {
 // show/hide effect
 .hide {
   height: 0;
+  min-height: 0;
   padding: 0 10px;
   border: none;
+  visibility: hidden;
   overflow: hidden;
-  transition: height 600ms linear, padding 1s;
+  transition: all 600ms linear, padding 1s;
 }
 
-.show {
+.active {
   border-bottom: 1px solid #0e131a;
   padding: 5px 10px;
-  height: 50px;
+  min-height: 50px;
+  visibility: visible;
   overflow: visible;
-  transition: height 600ms linear, padding 1s;
+  // transition: all 1000ms linear, padding 1s;
+  // transition-delay: 2s;
 
   @include for-small-phone-screens {
     height: 120px;

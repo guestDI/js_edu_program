@@ -1,6 +1,16 @@
 import moment from 'moment';
 import View from './View';
 import Model from './Model';
+import {
+    displayEnvironmentMessage,
+    formatDateTime
+} from './helper';
+import {
+    statuses
+} from './constants';
+
+const languages = ['en', 'ch', 'de'];
+const defaultLng = 'en';
 
 const presenter = (function (flightModel, flightView) {
     const state = {
@@ -9,17 +19,13 @@ const presenter = (function (flightModel, flightView) {
         changedFlights: [],
         current_secondary_lng: 'en',
         timeOut: null,
-        currentLngIndex: 0
-    };
-
-    const formattedDateTime = function (format) {
-        return moment(state.currentDate).format(format);
+        currentLngIndex: 0,
     };
 
     const formatDepartureTime = destinations => {
         let updated = destinations.map(destination => {
             const oldTime = destination.dateTime;
-            destination.dateTime = moment(oldTime).format('HH:mm');
+            destination.dateTime = formatDateTime(oldTime, 'HH:mm');
 
             return destination;
         });
@@ -46,14 +52,14 @@ const presenter = (function (flightModel, flightView) {
             id,
             status
         }) => prevState.find(
-            o =>
-            o.id == id && o.status['status_ru'] != status['status_ru']
+            o => o.id == id && o.status[`status_${defaultLng}`] != status[`status_${defaultLng}`]
         ));
 
         return changedDestinations;
     };
 
     const changeStatus = changedDestinations => {
+        // let lng = languages[state.currentLngIndex];
         let destinations = flightView.returnDestinations();
 
         destinations.forEach(d => {
@@ -66,7 +72,7 @@ const presenter = (function (flightModel, flightView) {
                     obj.status['status_ch'];
                 d.changeStatus(obj.status['status_ru'], secondaryLng);
 
-                if (obj.status['status_en'] == 'Canceled') {
+                if (obj.status[`status_${defaultLng}`] == statuses.CANCELED.EN) {
                     d.styleCanceledDeparture();
                 }
             }
@@ -78,14 +84,16 @@ const presenter = (function (flightModel, flightView) {
         let el = null;
 
         changedDestinations.forEach(d => {
-            if (d.status['status_ru'] == 'Посадка завершена') {
+            if (d.status['status_en'] == statuses.CLOSED.EN) {
                 el = destinations.find(
                     destination => destination.getElementId() == d.id
                 );
                 if (el) {
-                    el.collapseDestinationRecord();
-                    setTimeout(() => el.printClosedToTheDom(), 700);
-                    setTimeout(() => el.styleDeparuredFlight(), 800);
+                    // el.collapseDestination();
+                    // el.expandDestination();
+                    el.styleDeparuredFlight();
+                    // setTimeout(() => el.expandDestination(), 700);
+                    // setTimeout(() => el.styleDeparuredFlight(), 800);
                 }
             }
         });
@@ -96,8 +104,8 @@ const presenter = (function (flightModel, flightView) {
             data.forEach(d => {
                 let destination = flightView.createDestination(d);
 
-                destination.displayDestination(d.status['status_en']);
-                if (d.status['status_en'] == 'Canceled') {
+                destination.displayDestination(d.status[`status_${defaultLng}`]);
+                if (d.status[`status_${defaultLng}`] == statuses.CANCELED.EN) {
                     destination.styleCanceledDeparture();
                 }
             });
@@ -111,12 +119,11 @@ const presenter = (function (flightModel, flightView) {
             data.forEach(d => {
                 let destination = flightView.createDestination(d);
 
-                let secondaryLng =
-                    state.current_secondary_lng === 'en' ?
+                let secondaryLng = state.current_secondary_lng === 'en' ?
                     'status_en' :
                     'status_ch';
                 destination.displayNewDestination(d.status[secondaryLng]);
-                if (d.status['status_en'] == 'Canceled') {
+                if (d.status[`status_${defaultLng}`] == statuses.CANCELED.EN) {
                     destination.styleCanceledDeparture();
                 }
             });
@@ -151,7 +158,7 @@ const presenter = (function (flightModel, flightView) {
                     sortClosedDestinations(closed).length = 5;
 
                     let el = sortClosedDestinations(closed)[4];
-                    el.collapseDestinationRecord();
+                    el.collapseDestination();
                 }
 
                 state.destinations = r.slice();
@@ -160,57 +167,47 @@ const presenter = (function (flightModel, flightView) {
 
         setTimeout(setGlobalTimer, 3000);
     };
-    //TODO: create array of languages and
-    const changeSecondaryLanguage = () => {
-        let updated = '';
-        let newLanguage = {};
 
-        if (state.current_secondary_lng == 'en') {
-            updated = 'ch';
-            newLanguage = {
-                destination_lng: 'destination_ch',
-                status_lng: 'status_ch',
-            };
+    const changeLanguage = () => {
+        let newIndex = null;
+
+        if (state.currentLngIndex < languages.length - 1) {
+            newIndex = ++state.currentLngIndex;
         } else {
-            updated = 'en';
-            newLanguage = {
-                destination_lng: 'destination_en',
-                status_lng: 'status_en',
-            };
-        }
+            newIndex = 0;
+        };
 
-        state.current_secondary_lng = updated;
-
-        return newLanguage;
-    };
+        state.currentLngIndex = newIndex;
+    }
 
     const setLangTimeout = () => {
-        let lng = changeSecondaryLanguage();
+        let lng = languages[state.currentLngIndex];
         let destinations = flightView.returnDestinations();
 
         destinations.forEach(d => {
             let id = d.getElementId();
             let obj = state.destinations.find(obj => obj.id == id);
-            if (obj[lng.destination_lng]) {
-                d.changeDestinationLanguage(obj[lng.destination_lng]);
+            if (obj[`destination_${lng}`]) {
+                d.changeDestinationLanguage(obj[`destination_${lng}`]);
             }
-            d.changeStatusLanguage(obj.status[lng.status_lng]);
+            d.changeStatusLanguage(obj.status[`status_${lng}`]);
         });
 
+        changeLanguage();
         setTimeout(setLangTimeout, 5000);
     };
 
     return {
         init: function () {
-            process.env.NODE_ENV == 'production' || console.log('Application has started');
+            displayEnvironmentMessage();
             flightModel.getDestinations()
                 .then(r => {
-                    let resultState = r.slice();
+                    let resultState = [...r];
                     flightView.displayCurrentDate(
-                        formattedDateTime('DD.MM.YYYY')
+                        formatDateTime(state.displayCurrentDate, 'DD.MM.YYYY')
                     );
                     flightView.displayCurrentTime(
-                        formattedDateTime('HH:mm')
+                        formatDateTime(state.displayCurrentDate, 'HH:mm')
                     );
                     displayInitialDestinations(
                         formatDepartureTime(resultState)

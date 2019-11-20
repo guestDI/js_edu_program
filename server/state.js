@@ -2,21 +2,21 @@ const globalState = {
     destinations: [],
     currentDate: Date.getDate,
 
-    getDestinations: function(){
+    getDestinations: function () {
         return this.destinations;
     },
 
-    setDestinations: function(data){
-        destinations = data.slice();
+    setDestinations: function (data) {
+        this.destinations = data.slice();
     },
 
-    addNewDestination: function(destination){
-        destinations.push(destination)
+    addNewDestination: function (destination) {
+        this.destinations.push(destination)
     },
 
-    getCurrentDate: function(){
+    getCurrentDate: function () {
         return this.currentDate;
     }
-  }
+}
 
-  module.exports = globalState;
+module.exports = globalState;

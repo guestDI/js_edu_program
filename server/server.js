@@ -17,10 +17,10 @@ const citiesData = service.getCities();
 
 const generateInitialDestinationsList = () => {
   let destinationsData = service.getAllDestinations();
-  initialDestinations = [];
+  let initialDestinations = [];
 
-  destinationsData.forEach(element => {
-    initialDestinations.push(new Destination(element));
+  initialDestinations = destinationsData.map(element => {
+    return new Destination(element);
   });
 
   state.destinations = initialDestinations;
@@ -50,13 +50,13 @@ const updateDestinationStatus = () => {
     let duration = moment.duration(destinationTime.diff(state.currentDate));
     minutes = duration.asMinutes();
 
-    if (minutes < 15) {
+    if (minutes <= 15) {
       f.setDestinationStatus(statusesData['closed']);
-    } else if (minutes > 15 && minutes < 25) {
+    } else if (minutes > 15 && minutes <= 25) {
       f.setDestinationStatus(statusesData['last_call']);
-    } else if (minutes > 25 && minutes < 35) {
+    } else if (minutes > 25 && minutes <= 35) {
       f.setDestinationStatus(statusesData['boarding_now']);
-    } else if (minutes > 35) {
+    } else {
       f.setDestinationStatus(statusesData['waiting']);
     }
   });
@@ -73,7 +73,6 @@ const makeDestinationCanceled = () => {
   if (waitingDestinations.length > 0) {
     changedDestination = waitingDestinations[random];
     changedDestination.status = statusesData['canceled'];
-    changedDestination.dateTime = null;
   }
 
   indexOfDestination = state.destinations.findIndex(
@@ -108,6 +107,7 @@ const createNewDestination = () => {
     destination_ru: citiesData[random].destination_ru,
     destination_en: citiesData[random].destination_en,
     destination_ch: citiesData[random].destination_ch,
+    destination_de: citiesData[random].destination_de,
     dateTime: newFlightDate,
     gate: `${random_ascii}${random + 1}`,
     gate_time: `${random + 2} min`,
@@ -123,7 +123,7 @@ function setGlobalTimer() {
   updateDestinationStatus();
   state.destinations.push(createNewDestination());
 
-  setTimeout(setGlobalTimer, 7000);
+  setTimeout(setGlobalTimer, 6000);
 }
 
 function setTimerToMakeDestinationCanceled() {

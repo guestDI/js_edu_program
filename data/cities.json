@@ -1,58 +1,68 @@
-[
-    {
+[{
         "destination_ru": "Берлин",
         "destination_en": "Berlin",
-        "destination_ch": "柏林"
+        "destination_ch": "柏林",
+        "destination_de": "Berlin"
     },
     {
         "destination_ru": "Нью-Йорк",
         "destination_en": "New York",
-        "destination_ch": "紐約"
+        "destination_ch": "紐約",
+        "destination_de": "New York"
     },
     {
         "destination_ru": "Минск",
         "destination_en": "Minsk",
-        "destination_ch": "明斯克"
+        "destination_ch": "明斯克",
+        "destination_de": "Minsk"
     },
     {
         "destination_ru": "Москва",
         "destination_en": "Moscow",
-        "destination_ch": "莫斯科"
+        "destination_ch": "莫斯科",
+        "destination_de": "Moskau"
     },
     {
         "destination_ru": "Франкфурт",
         "destination_en": "Frankfurt",
-        "destination_ch": "伊爾庫茨克"
+        "destination_ch": "伊爾庫茨克",
+        "destination_de": "Frankfurt"
     },
     {
         "destination_ru": "Атланта",
         "destination_en": "Atlanta",
-        "destination_ch": "亞特蘭大"
+        "destination_ch": "亞特蘭大",
+        "destination_de": "Atlanta"
     },
     {
         "destination_ru": "Осло",
         "destination_en": "Oslo",
-        "destination_ch": "奧斯陸"
+        "destination_ch": "奧斯陸",
+        "destination_de": "Oslo"
     },
     {
         "destination_ru": "Лондон",
         "destination_en": "London",
-        "destination_ch": "倫敦的"
+        "destination_ch": "倫敦的",
+        "destination_de": "London"
     },
     {
         "destination_ru": "Ливерпуль",
         "destination_en": "Liverpool",
-        "destination_ch": "利物浦"
+        "destination_ch": "利物浦",
+        "destination_de": "Liverpool"
     },
     {
         "destination_ru": "Барселона",
         "destination_en": "Barcelona",
-        "destination_ch": "巴塞羅納"
+        "destination_ch": "巴塞羅納",
+        "destination_de": "Barcelona"
     },
     {
         "destination_ru": "Стамбул",
         "destination_en": "Stambul",
-        "destination_ch": "伊斯坦堡"
+        "destination_ch": "伊斯坦堡",
+        "destination_de": "Stammbulle"
     }
 
 ]
