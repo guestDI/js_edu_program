@@ -126,17 +126,11 @@ body {
       width: 100%;
       height: auto;
     }
-
-    // &_cancelled {
-    //   background-color: #730000;
-    // }
-
-    // &_cancelled{
-    //   img{
-
-    //   }
-    // }
   }
+
+  // .sub_status {
+  //   color: $secondary-font-color;
+  // }
 
   .sub_status span::before {
     content: attr(data-content);

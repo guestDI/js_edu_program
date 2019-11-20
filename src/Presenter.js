@@ -92,8 +92,6 @@ const presenter = (function (flightModel, flightView) {
                     // el.collapseDestination();
                     // el.expandDestination();
                     el.styleDeparuredFlight();
-                    // setTimeout(() => el.expandDestination(), 700);
-                    // setTimeout(() => el.styleDeparuredFlight(), 800);
                 }
             }
         });

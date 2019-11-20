@@ -71,7 +71,7 @@ const UIController = (function () {
 					closedSection.childNodes[0]
 				);
 				element.classList.add('show');
-				// setTimeout(() => element.classList.add('show'), 500);
+
 			},
 
 			displayNewDestination: function (status) {
@@ -79,9 +79,7 @@ const UIController = (function () {
 					status == statuses.CLOSED.EN ?
 					DOMStrings.closedDestinationsSelector :
 					DOMStrings.openDestinationsSelector;
-				// element.classList.add('hide');
 				document.querySelector(section).appendChild(element);
-				// setTimeout(() => element.classList.add('show'), 0);
 			},
 
 			styleDeparuredFlight: function () {
@@ -93,14 +91,7 @@ const UIController = (function () {
 			},
 
 			styleScheduledDestination: function () {
-				element
-					.querySelector(DOMStrings.statusSelector)
-					.classList.remove('status_cancelled');
-				element
-					.querySelector(DOMStrings.statusSelector)
-					.getElementsByTagName('span')[1].style.color = '#b8b8b8';
-				element.getElementsByTagName('time')[0].style.visibility =
-					'visible';
+				element.classList.remove('canceled');
 			},
 
 			changeDestinationLanguage: function (destination) {
@@ -136,8 +127,8 @@ const UIController = (function () {
 					element,
 					closedSection.childNodes[0]
 				);
-				element.classList.remove('hide');
-				element.classList.add('show');
+				// element.classList.remove('hide');
+				// element.classList.add('show');
 			}
 		};
 	}
