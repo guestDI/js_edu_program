@@ -34,7 +34,8 @@ const updateDestinationTime = () => {
     let t = moment(Date.getDate)
       .add((7 + i) * 3, 'm')
       .toDate();
-    item.setDestinationTime(t);
+
+    item.destinationTime = t;
 
     return item;
   });
@@ -51,13 +52,13 @@ const updateDestinationStatus = () => {
     minutes = duration.asMinutes();
 
     if (minutes <= 15) {
-      f.setDestinationStatus(statusesData['closed']);
+      f.destinationStatus = statusesData['closed'];
     } else if (minutes > 15 && minutes <= 25) {
-      f.setDestinationStatus(statusesData['last_call']);
+      f.destinationStatus = statusesData['last_call'];
     } else if (minutes > 25 && minutes <= 35) {
-      f.setDestinationStatus(statusesData['boarding_now']);
+      f.destinationStatus = statusesData['boarding_now'];
     } else {
-      f.setDestinationStatus(statusesData['waiting']);
+      f.destinationStatus = statusesData['waiting'];
     }
   });
 };
@@ -123,7 +124,7 @@ function setGlobalTimer() {
   updateDestinationStatus();
   state.destinations.push(createNewDestination());
 
-  setTimeout(setGlobalTimer, 6000);
+  setTimeout(setGlobalTimer, 2000);
 }
 
 function setTimerToMakeDestinationCanceled() {

@@ -24,8 +24,6 @@ html {
   @include for-small-tablets {
     padding-left: 10px;
   }
-
-  // overflow: hidden;
 }
 
 .sub-city::before {
@@ -78,12 +76,19 @@ body {
 }
 
 .destination-block-wrapper {
-  border-bottom: 1px solid #0e131a;
-  padding: 5px 10px;
-  font-weight: 600;
-  box-sizing: border-box;
-  font-size: 0;
-  min-height: 50px;
+  // border-bottom: 1px solid #0e131a;
+  // padding: 5px 10px;
+  // font-weight: 600;
+  // box-sizing: border-box;
+  // font-size: 0;
+  // min-height: 50px;
+  height: 0;
+  min-height: 0;
+  padding: 0 10px;
+  border: none;
+  visibility: hidden;
+  overflow: hidden;
+  transition: all 600ms linear, padding 1s linear;
 
   @include for-phone-screens {
     display: flex;
@@ -127,10 +132,6 @@ body {
       height: auto;
     }
   }
-
-  // .sub_status {
-  //   color: $secondary-font-color;
-  // }
 
   .sub_status span::before {
     content: attr(data-content);
@@ -198,7 +199,7 @@ body {
       box-sizing: border-box;
       display: inline-block;
       width: 47%;
-      min-height: 45px;
+      min-height: 40px;
       background-color: #0e131a;
       padding: 5px 0 0 5px;
       font-size: 15px;
@@ -230,11 +231,11 @@ body {
 
 .canceled {
   .status {
+    background-color: #730000;
+
     .sub_status {
       color: #ff3333;
     }
-
-    background-color: #730000;
   }
 
   .time {
@@ -294,7 +295,7 @@ header {
       @include for-phone-screens {
         display: flex;
         flex-direction: column;
-        width: -webkit-fill-available;
+        // width: -webkit-fill-available;
         width: fill-available;
         justify-content: flex-end;
         padding-bottom: 15px;
@@ -349,24 +350,15 @@ header {
 }
 
 // show/hide effect
-.hide {
-  height: 0;
-  min-height: 0;
-  padding: 0 10px;
-  border: none;
-  visibility: hidden;
-  overflow: hidden;
-  transition: all 600ms linear, padding 1s;
-}
 
 .active {
   border-bottom: 1px solid #0e131a;
   padding: 5px 10px;
+  font-weight: 600;
+  box-sizing: border-box;
+  font-size: 0;
   min-height: 50px;
   visibility: visible;
-  overflow: visible;
-  // transition: all 1000ms linear, padding 1s;
-  // transition-delay: 2s;
 
   @include for-small-phone-screens {
     height: 120px;

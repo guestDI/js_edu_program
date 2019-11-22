@@ -16,7 +16,8 @@ const UIController = (function () {
 		subCityLanguageSelector: '.sub-city',
 		statusSelector: '.status',
 		primaryStatusSelector: '.primary_status',
-		secondaryStatusSelector: '.status > .sub-text_color > span'
+		secondaryStatusSelector: '.status > .sub-text_color > span',
+		noDataText: '<div class="no-data"><h3>No Data</h3></div>'
 	};
 
 	const destinationRecords = [];
@@ -37,11 +38,17 @@ const UIController = (function () {
 		const wrapperElement = document.createElement('li');
 		const template = getHtmlTemplate(destination);
 
-		wrapperElement.className = 'destination-block-wrapper';
+		wrapperElement.classList.add('destination-block-wrapper', 'active');
 		wrapperElement.id = destination.id;
 		wrapperElement.innerHTML = template;
 
 		const element = wrapperElement;
+
+		const openSection = document.querySelector(DOMStrings.openDestinationsSelector);
+		const closedSection = document.querySelector(DOMStrings.closedDestinationsSelector);
+		const secondaryStatusField = element.querySelector(DOMStrings.secondaryStatusSelector);
+		const subCity = element.querySelector(DOMStrings.subCityLanguageSelector);
+		const primaryStatus = element.querySelector(DOMStrings.primaryStatusSelector);
 
 		return {
 			getElementId: function () {
@@ -49,8 +56,7 @@ const UIController = (function () {
 			},
 
 			getElementStatus: function () {
-				return element.querySelector(DOMStrings.primaryStatusSelector)
-					.innerHTML;
+				return primaryStatus.innerHTML;
 			},
 
 			getElementTime: function () {
@@ -58,28 +64,21 @@ const UIController = (function () {
 			},
 
 			displayDestination: function (status) {
-				let section = status == statuses.CLOSED.EN ? DOMStrings.closedDestinationsSelector : DOMStrings.openDestinationsSelector;
-				document.querySelector(section).appendChild(element);
+				let section = status == statuses.EN.CLOSED ? closedSection : openSection;
+				section.appendChild(element);
 			},
 
 			printClosedToTheDom: function () {
-				let closedSection = document.querySelector(
-					DOMStrings.closedDestinationsSelector
-				);
 				closedSection.insertBefore(
 					element,
 					closedSection.childNodes[0]
 				);
-				element.classList.add('show');
+				element.classList.add('active');
 
 			},
 
-			displayNewDestination: function (status) {
-				let section =
-					status == statuses.CLOSED.EN ?
-					DOMStrings.closedDestinationsSelector :
-					DOMStrings.openDestinationsSelector;
-				document.querySelector(section).appendChild(element);
+			displayNewDestination: function () {
+				openSection.appendChild(element);
 			},
 
 			styleDeparuredFlight: function () {
@@ -95,40 +94,29 @@ const UIController = (function () {
 			},
 
 			changeDestinationLanguage: function (destination) {
-				element.querySelector(
-					DOMStrings.subCityLanguageSelector
-				).setAttribute('data-content', destination);
+				subCity.setAttribute('data-content', destination);
 			},
 
 			changeStatusLanguage: function (status) {
-				element.querySelector(
-					DOMStrings.secondaryStatusSelector
-				).setAttribute('data-content', status);
+				secondaryStatusField.setAttribute('data-content', status);
 			},
 
 			changeStatus: function (status_ru, secondaryStatus) {
-				element.querySelector(
-					DOMStrings.primaryStatusSelector
-				).innerHTML = status_ru;
-				element.querySelector(
-					DOMStrings.secondaryStatusSelector
-				).setAttribute('data-content', secondaryStatus);
+				primaryStatus.innerHTML = status_ru;
+				secondaryStatusField.setAttribute('data-content', secondaryStatus);
 			},
 
 			collapseDestination: function () {
-				element.classList.add('hide');
+				element.classList.toggle('active');
 			},
 
 			expandDestination: function () {
-				let closedSection = document.querySelector(
-					DOMStrings.closedDestinationsSelector
-				);
 				closedSection.insertBefore(
 					element,
 					closedSection.childNodes[0]
 				);
-				// element.classList.remove('hide');
-				// element.classList.add('show');
+
+				element.classList.add('active');
 			}
 		};
 	}
@@ -194,7 +182,7 @@ const UIController = (function () {
 
 		returnClosedDestinations: function () {
 			return destinationRecords.filter(
-				d => d.getElementStatus() == 'Посадка завершена'
+				d => d.getElementStatus() == statuses.EN.CLOSED
 			);
 		},
 
@@ -206,7 +194,7 @@ const UIController = (function () {
 
 		renderNoDataMessage: function () {
 			const mainBlock = document.querySelector(DOMStrings.mainSelector);
-			mainBlock.innerHTML = '<div class="no-data"><h3>No Data</h3></div>'
+			mainBlock.innerHTML = DOMStrings.noDataText;
 		}
 	};
 })();

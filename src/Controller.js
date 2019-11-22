@@ -1,4 +1,4 @@
-const model = (function () {
+const constroller = (function () {
     return {
         getDestinations: async function () {
             let response = await fetch('http://localhost:5000/destinations');
@@ -16,4 +16,4 @@ const model = (function () {
     }
 })();
 
-export default model;
+export default constroller;

@@ -1,6 +1,5 @@
-import moment from 'moment';
 import View from './View';
-import Model from './Model';
+import Controller from './Controller';
 import {
     displayEnvironmentMessage,
     formatDateTime
@@ -59,20 +58,17 @@ const presenter = (function (flightModel, flightView) {
     };
 
     const changeStatus = changedDestinations => {
-        // let lng = languages[state.currentLngIndex];
         let destinations = flightView.returnDestinations();
 
         destinations.forEach(d => {
             let id = d.getElementId();
             let obj = changedDestinations.find(obj => obj.id == id);
             if (obj) {
-                let secondaryLng =
-                    state.current_secondary_lng === 'en' ?
-                    obj.status['status_en'] :
-                    obj.status['status_ch'];
+                let lng = languages[state.currentLngIndex - 1];
+                let secondaryLng = obj.status[`status_${lng}`];
                 d.changeStatus(obj.status['status_ru'], secondaryLng);
 
-                if (obj.status[`status_${defaultLng}`] == statuses.CANCELED.EN) {
+                if (obj.status[`status_${defaultLng}`] == statuses.EN.CANCELED) {
                     d.styleCanceledDeparture();
                 }
             }
@@ -84,14 +80,14 @@ const presenter = (function (flightModel, flightView) {
         let el = null;
 
         changedDestinations.forEach(d => {
-            if (d.status['status_en'] == statuses.CLOSED.EN) {
+            if (d.status[`status_${defaultLng}`] == statuses.EN.CLOSED) {
                 el = destinations.find(
                     destination => destination.getElementId() == d.id
                 );
                 if (el) {
-                    // el.collapseDestination();
-                    // el.expandDestination();
-                    el.styleDeparuredFlight();
+                    el.collapseDestination();
+                    setTimeout(() => el.expandDestination(), 1000);
+                    setTimeout(() => el.styleDeparuredFlight(), 2000);
                 }
             }
         });
@@ -103,7 +99,7 @@ const presenter = (function (flightModel, flightView) {
                 let destination = flightView.createDestination(d);
 
                 destination.displayDestination(d.status[`status_${defaultLng}`]);
-                if (d.status[`status_${defaultLng}`] == statuses.CANCELED.EN) {
+                if (d.status[`status_${defaultLng}`] == statuses.EN.CANCELED) {
                     destination.styleCanceledDeparture();
                 }
             });
@@ -116,21 +112,14 @@ const presenter = (function (flightModel, flightView) {
         if (data.length) {
             data.forEach(d => {
                 let destination = flightView.createDestination(d);
-
-                let secondaryLng = state.current_secondary_lng === 'en' ?
-                    'status_en' :
-                    'status_ch';
-                destination.displayNewDestination(d.status[secondaryLng]);
-                if (d.status[`status_${defaultLng}`] == statuses.CANCELED.EN) {
-                    destination.styleCanceledDeparture();
-                }
+                destination.displayNewDestination();
             });
         }
     };
-
+    //TODO: change sort to asc
     const sortClosedDestinations = data => {
         data.sort((a, b) => (
-            new Date('1970/01/01 ' + b.getElementTime()) - new Date('1970/01/01 ' + a.getElementTime())
+            new Date('1970/01/01 ' + a.getElementTime()) - new Date('1970/01/01 ' + b.getElementTime())
         ));
 
         return data;
@@ -148,7 +137,7 @@ const presenter = (function (flightModel, flightView) {
             }
 
             if (changedDestinations.length > 0) {
-                let closed = flightView.returnClosedDestinations();
+                let closed = [...flightView.returnClosedDestinations()];
                 changeStatus(changedDestinations);
                 closeDestination(changedDestinations);
 
@@ -163,36 +152,35 @@ const presenter = (function (flightModel, flightView) {
             }
         });
 
-        setTimeout(setGlobalTimer, 3000);
+        setTimeout(setGlobalTimer, 2000);
     };
 
     const changeLanguage = () => {
-        let newIndex = null;
+        let newIndex = ++state.currentLngIndex;
 
-        if (state.currentLngIndex < languages.length - 1) {
-            newIndex = ++state.currentLngIndex;
-        } else {
+        if (newIndex >= languages.length) {
             newIndex = 0;
-        };
+        }
 
         state.currentLngIndex = newIndex;
     }
 
     const setLangTimeout = () => {
-        let lng = languages[state.currentLngIndex];
-        let destinations = flightView.returnDestinations();
+        setInterval(() => {
+            let lng = languages[state.currentLngIndex];
+            let destinations = flightView.returnDestinations();
 
-        destinations.forEach(d => {
-            let id = d.getElementId();
-            let obj = state.destinations.find(obj => obj.id == id);
-            if (obj[`destination_${lng}`]) {
-                d.changeDestinationLanguage(obj[`destination_${lng}`]);
-            }
-            d.changeStatusLanguage(obj.status[`status_${lng}`]);
-        });
+            destinations.forEach(d => {
+                let id = d.getElementId();
+                let obj = state.destinations.find(obj => obj.id == id);
+                if (obj[`destination_${lng}`]) {
+                    d.changeDestinationLanguage(obj[`destination_${lng}`]);
+                }
+                d.changeStatusLanguage(obj.status[`status_${lng}`]);
+            });
 
-        changeLanguage();
-        setTimeout(setLangTimeout, 5000);
+            changeLanguage();
+        }, 2000)
     };
 
     return {
@@ -222,7 +210,7 @@ const presenter = (function (flightModel, flightView) {
             setGlobalTimer();
         },
     };
-})(Model, View);
+})(Controller, View);
 
 window.onload = function () {
     presenter.init();

@@ -1,0 +1,100 @@
+[{
+        "id": 1,
+        "destination": null,
+        "dateTime": "",
+        "gate": "D2",
+        "gate_time": "3 min",
+        "status": null,
+        "flights": ["KL2894", "SU1862"]
+    },
+    {
+        "id": 2,
+        "destination": null,
+        "dateTime": "",
+        "gate": "D12",
+        "gate_time": "3 min",
+        "status": null,
+        "flights": ["JP915", "SU4160"]
+    },
+    {
+        "id": 3,
+        "destination": null,
+        "dateTime": "",
+        "gate": "D11",
+        "gate_time": "2 min",
+        "status": null,
+        "flights": ["KL2859", "SU1330"]
+    },
+    {
+        "id": 4,
+        "destination": null,
+        "dateTime": "",
+        "gate": "E56",
+        "gate_time": "3 min",
+        "status": null,
+        "flights": ["N4156"]
+    },
+    {
+        "id": 5,
+        "destination": null,
+        "dateTime": "",
+        "gate": "D25",
+        "gate_time": "2 min",
+        "status": null,
+        "flights": ["SU1730"]
+    },
+    {
+        "id": 6,
+        "destination": null,
+        "dateTime": "",
+        "gate": "D44",
+        "gate_time": "3 min",
+        "status": null,
+        "flights": ["SU3204", "KL904"]
+    },
+    {
+        "id": 7,
+        "destination": null,
+        "dateTime": "",
+        "gate": "F95",
+        "gate_time": "4 min",
+        "status": null,
+        "flights": ["SU2024"]
+    },
+    {
+        "id": 8,
+        "destination": null,
+        "dateTime": "",
+        "gate": "E45",
+        "gate_time": "4 min",
+        "status": null,
+        "flights": ["KL2892", "SU1710"]
+    },
+    {
+        "id": 9,
+        "destination": null,
+        "dateTime": "",
+        "gate": "D8",
+        "gate_time": "15 min",
+        "status": null,
+        "flights": ["AF4952", "SU1414"]
+    },
+    {
+        "id": 10,
+        "destination": null,
+        "dateTime": "",
+        "gate": "D10",
+        "gate_time": "10 min",
+        "status": null,
+        "flights": ["N4195"]
+    },
+    {
+        "id": 11,
+        "destination": null,
+        "dateTime": "",
+        "gate": "E42",
+        "gate_time": "12 min",
+        "status": null,
+        "flights": ["AZ7163", "SU2404", "AF1745"]
+    }
+]

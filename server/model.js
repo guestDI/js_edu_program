@@ -12,11 +12,11 @@ class Destination {
         this.flights = element.flights;
     }
 
-    setDestinationTime(time) {
+    set destinationTime(time) {
         this.dateTime = time;
     }
 
-    setDestinationStatus(status) {
+    set destinationStatus(status) {
         this.status = status;
     }
 
