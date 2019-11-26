@@ -13,15 +13,14 @@ class Destination {
     }
 
     set destinationTime(time) {
-        this.dateTime = time;
+        if (!isNaN(Date.parse(time))) {
+            this.dateTime = time;
+        }
+
     }
 
     set destinationStatus(status) {
         this.status = status;
-    }
-
-    get destination() {
-        return this;
     }
 }
 

@@ -10,6 +10,11 @@
   "author": "Dzmitry Ihnatovich",
   "license": "ISC",
   "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.7.1",
     "nodemon": "^1.19.4"
+  },
+  "dependencies": {
+    "moment": "^2.24.0"
   }
 }

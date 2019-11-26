@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable dot-notation */
 const http = require('http');
 const url = require('url');
 const moment = require('moment');
@@ -9,17 +11,17 @@ const Destination = require('./model');
 
 const state = {
   destinations: [],
-  currentDate: Date.getDate
+  currentDate: Date.getDate,
 };
 
 const statusesData = service.getStatuses();
 const citiesData = service.getCities();
 
 const generateInitialDestinationsList = () => {
-  let destinationsData = service.getAllDestinations();
+  const destinationsData = service.getAllDestinations();
   let initialDestinations = [];
 
-  initialDestinations = destinationsData.map(element => {
+  initialDestinations = destinationsData.map((element) => {
     return new Destination(element);
   });
 
@@ -31,11 +33,10 @@ const updateDestinationTime = () => {
   let updatedDestinations = [];
 
   updatedDestinations = state.destinations.map((item, i) => {
-    let t = moment(Date.getDate)
+    // eslint-disable-next-line no-param-reassign
+    item.destinationTime = moment(Date.getDate)
       .add((7 + i) * 3, 'm')
       .toDate();
-
-    item.destinationTime = t;
 
     return item;
   });
@@ -46,9 +47,10 @@ const updateDestinationTime = () => {
 const updateDestinationStatus = () => {
   let minutes = null;
 
-  state.destinations.map(f => {
-    let destinationTime = moment(f.dateTime);
-    let duration = moment.duration(destinationTime.diff(state.currentDate));
+  // eslint-disable-next-line array-callback-return
+  state.destinations.map((f) => {
+    const destinationTime = moment(f.dateTime);
+    const duration = moment.duration(destinationTime.diff(state.currentDate));
     minutes = duration.asMinutes();
 
     if (minutes <= 15) {
@@ -64,10 +66,10 @@ const updateDestinationStatus = () => {
 };
 
 const makeDestinationCanceled = () => {
-  let waitingDestinations = state.destinations.filter(
-    d => d.status['status_en'] == 'Wait for boarding'
+  const waitingDestinations = state.destinations.filter(
+    (d) => d.status['status_en'] === 'Wait for boarding'
   );
-  let random = helpers.generateRandomNumber(waitingDestinations.length - 1, 0);
+  const random = helpers.generateRandomNumber(waitingDestinations.length - 1, 0);
   let changedDestination = null;
   let indexOfDestination = null;
 
@@ -76,9 +78,7 @@ const makeDestinationCanceled = () => {
     changedDestination.status = statusesData['canceled'];
   }
 
-  indexOfDestination = state.destinations.findIndex(
-    d => d.id === changedDestination.id
-  );
+  indexOfDestination = state.destinations.findIndex((d) => d.id === changedDestination.id);
 
   state.destinations.splice(indexOfDestination, 1, changedDestination);
 };
@@ -90,30 +90,30 @@ const init = () => {
 };
 
 const createNewDestination = () => {
-  let random = helpers.generateRandomNumber(citiesData.length - 1, 0);
-  let numberOfFlights = helpers.generateRandomNumber(3, 1);
-  let random_ascii = helpers.generateRandomASCII();
-  let destinationFlights = [];
-  let newFlightDate = moment(state.currentDate)
+  const random = helpers.generateRandomNumber(citiesData.length - 1, 0);
+  const numberOfFlights = helpers.generateRandomNumber(3, 1);
+  const randomAscii = helpers.generateRandomASCII();
+  const destinationFlights = [];
+  const newFlightDate = moment(state.currentDate)
     .add(70, 'm')
     .toDate();
 
   for (let i = 0; i <= numberOfFlights; i++) {
-    let ascii = helpers.generateRandomNumber(90, 65);
+    const ascii = helpers.generateRandomNumber(90, 65);
     destinationFlights.push(`${String.fromCharCode(ascii)}${i}${ascii}${i}`);
   }
 
-  let newDestination = {
+  const newDestination = {
     id: helpers.generateRandomId(),
     destination_ru: citiesData[random].destination_ru,
     destination_en: citiesData[random].destination_en,
     destination_ch: citiesData[random].destination_ch,
     destination_de: citiesData[random].destination_de,
     dateTime: newFlightDate,
-    gate: `${random_ascii}${random + 1}`,
+    gate: `${randomAscii}${random + 1}`,
     gate_time: `${random + 2} min`,
     status: statusesData.waiting,
-    flights: destinationFlights
+    flights: destinationFlights,
   };
 
   return new Destination(newDestination);
@@ -139,40 +139,32 @@ init();
 
 const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
   const pathName = url.parse(req.url, true).pathname;
-  const id = url.parse(req.url, true).query.id;
+  const { id } = url.parse(req.url, true).query;
 
   if (pathName === '/destinations' || pathName === '/') {
     res.writeHead(200, {
-      'Content-Type': 'text/html'
+      'Content-Type': 'text/html',
     });
     res.end(JSON.stringify(state.destinations));
   } else if (pathName === '/statuses') {
     res.writeHead(200, {
-      'Content-Type': 'text/html'
+      'Content-Type': 'text/html',
     });
     res.end(JSON.stringify(service.getStatuses()));
   } else if (pathName === '/destination' && id < state.destinations.length) {
     res.writeHead(200, {
-      'Content-Type': 'text/html'
+      'Content-Type': 'text/html',
     });
     res.end(JSON.stringify(service.getDestinationById(state.destinations, id)));
   } else {
     res.writeHead(404, {
-      'Content-Type': 'text/html'
+      'Content-Type': 'text/html',
     });
     res.end('URL not found');
   }
 });
 
-server.listen(serverConfig.PORT, serverConfig.HOSTNAME, () => {
-  console.log(
-    // eslint-disable-next-line prettier/prettier
-    'Server running at http://' + serverConfig.HOSTNAME + ':' + serverConfig.PORT + '/'
-  );
-});
+server.listen(serverConfig.PORT, serverConfig.HOSTNAME);
