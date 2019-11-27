@@ -142,7 +142,9 @@ const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
   const pathName = url.parse(req.url, true).pathname;
-  const { id } = url.parse(req.url, true).query;
+  const {
+    id
+  } = url.parse(req.url, true).query;
 
   if (pathName === '/destinations' || pathName === '/') {
     res.writeHead(200, {
