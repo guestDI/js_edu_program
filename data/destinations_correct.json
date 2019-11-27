@@ -1,6 +1,17 @@
 [{
         "id": 1,
-        "destination": null,
+        "ru-RU": {
+            "destination": "Ереван",
+            "status_waiting": "Ожидание посадки"
+        },
+        "en-EN": {
+            "destination": "Yerevan",
+            "status_waiting": "Wait for boarding"
+        },
+        "ch-CH": {
+            "destination": "埃里溫",
+            "status_waiting": "Отменен"
+        },
         "dateTime": "",
         "gate": "D2",
         "gate_time": "3 min",

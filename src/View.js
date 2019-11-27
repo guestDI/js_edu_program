@@ -22,7 +22,7 @@ const UIController = (function () {
 
 	const destinationRecords = [];
 
-	const displayFilghts = flights => {
+	const displayFilghts = (flights) => {
 		let flightsList = [];
 
 		if (flights) {
@@ -34,11 +34,53 @@ const UIController = (function () {
 		return flightsList.join('');
 	};
 
+	function getHtmlTemplate({
+		dateTime,
+		destination_ru,
+		destination_en,
+		flights,
+		gate_time,
+		gate,
+		status,
+		lng
+	}) {
+		return `<div class="destination-block time sub-text_color">
+                    <time>${dateTime}</time>
+                </div>
+                <div class="destination-block flights-destination">
+                    <div>
+                        <span class="city">${destination_ru}</span>
+                        <span class="sub-text_color sub-city sub-text_size" data-content="${destination_en}"></span>
+                    </div>
+                    <div class="flights">
+                        ${displayFilghts(flights)}
+                    </div>
+                </div>
+                <div class="destination-block gate-block-wrapper">
+                    <div class="gate-block">
+                        <img class="step" src="images/steps.png" />
+                        <span>${gate_time}</span>
+                    </div>
+                    <div class="gate-block">
+                        <span>${gate}</span>
+                    </div>
+                </div>
+                <div class="destination-block status">
+                    <div class="primary_status">
+                        <span>${status.status_ru}</span>
+                    </div>
+                    <div class="sub-text_color sub_status">
+                        <span data-content="${status[`status_${lng}`]}"></span>
+                    </div>
+                </div>`;
+	}
+
 	function destinationRecord(destination) {
 		const wrapperElement = document.createElement('li');
 		const template = getHtmlTemplate(destination);
 
-		wrapperElement.classList.add('destination-block-wrapper', 'active');
+		wrapperElement.classList.add('destination-block-wrapper');
+		wrapperElement.classList.add('active');
 		wrapperElement.id = destination.id;
 		wrapperElement.innerHTML = template;
 
@@ -64,7 +106,7 @@ const UIController = (function () {
 			},
 
 			displayDestination: function (status) {
-				let section = status == statuses.EN.CLOSED ? closedSection : openSection;
+				let section = status == statuses['en-EN'].CLOSED ? closedSection : openSection;
 				section.appendChild(element);
 			},
 
@@ -107,58 +149,17 @@ const UIController = (function () {
 			},
 
 			collapseDestination: function () {
-				element.classList.toggle('active');
+				element.classList.remove('active');
 			},
 
 			expandDestination: function () {
-				closedSection.insertBefore(
-					element,
-					closedSection.childNodes[0]
-				);
+				closedSection.insertAdjacentElement('beforeEnd', element);
 
-				element.classList.add('active');
+				setTimeout(() => {
+					element.classList.add('active');
+				}, 100);
 			}
 		};
-	}
-
-	function getHtmlTemplate({
-		dateTime,
-		destination_ru,
-		destination_en,
-		flights,
-		gate_time,
-		gate,
-		status
-	}) {
-		return `<div class="destination-block time sub-text_color">
-                    <time>${dateTime}</time>
-                </div>
-                <div class="destination-block flights-destination">
-                    <div>
-                        <span class="city">${destination_ru}</span>
-                        <span class="sub-text_color sub-city sub-text_size" data-content="${destination_en}"></span>
-                    </div>
-                    <div class="flights">
-                        ${displayFilghts(flights)}
-                    </div>
-                </div>
-                <div class="destination-block gate-block-wrapper">
-                    <div class="gate-block">
-                        <img class="step" src="images/steps.png" />
-                        <span>${gate_time}</span>
-                    </div>
-                    <div class="gate-block">
-                        <span>${gate}</span>
-                    </div>
-                </div>
-                <div class="destination-block status">
-                    <div class="primary_status">
-                        <span>${status.status_ru}</span>
-                    </div>
-                    <div class="sub-text_color sub_status">
-                        <span data-content="${status.status_en}"></span>
-                    </div>
-                </div>`;
 	}
 
 	return {
@@ -182,7 +183,7 @@ const UIController = (function () {
 
 		returnClosedDestinations: function () {
 			return destinationRecords.filter(
-				d => d.getElementStatus() == statuses.EN.CLOSED
+				d => d.getElementStatus() == statuses['en-EN'].CLOSED
 			);
 		},
 

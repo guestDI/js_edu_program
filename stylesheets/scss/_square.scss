@@ -1,6 +1,10 @@
-@import '_media';
-
 $square-color: #db8b18;
+
+$smMinWidth: 318px;
+$smMaxWidth: 460px;
+$mdMinWidth: 461px;
+$mdMaxWidth: 660px;
+$lgMaxWidth: 1200px;
 
 .square {
   display: inline-block;
@@ -14,36 +18,9 @@ $square-color: #db8b18;
   font-weight: bold;
   padding: 0.2em 0 0 0.2em;
 
-  @include for-phone-screens {
+  @media only screen and (min-width: $smMinWidth) and (max-width: $smMaxWidth) {
     width: 25px;
     height: 25px;
     font-size: 0.8em;
   }
 }
-
-// .square:after {
-//   content: "";
-//   display: block;
-//   padding-bottom: 100%;
-// }
-
-// .content {
-//   color: #000;
-//   font-size: 1.1em;
-//   font-weight: bold;
-// }
-
-// .content {
-//   // position: absolute;
-//   // top: 4px;
-//   // left: 4px;
-//   width: 100%;
-//   height: 100%;
-//   color: #000;
-//   font-size: 1.1em;
-//   font-weight: bold;
-
-//   @include for-phone-screens {
-//     font-size: 0.9em;
-//   }
-// }
