@@ -268,7 +268,7 @@ footer {
 
 @media only screen and (min-width: $smMinWidth) and (max-width: $mdMaxWidth) {
   .destination-block-wrapper.active {
-    min-height: 125px;
+    min-height: 100px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
