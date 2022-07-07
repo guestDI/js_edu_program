@@ -53,6 +53,6 @@
   "dependencies": {
     "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-polyfill": "^6.26.0",
-    "moment": "^2.24.0"
+    "moment": "^2.29.4"
   }
 }
